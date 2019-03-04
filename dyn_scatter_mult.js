@@ -222,13 +222,14 @@ function ReverseScatter(data) {
     .attr('fill', d => color(d.Region));
 
 
+  // text label for the x axis
   svg.append("text")             
       .attr("transform",
             "translate(" + (width-xaxsp) + " ," + 
                            (margin.top/xaxden) + ")")
-      .attr("dx", "1em")
+      .attr("dy", "1em")
       .style("text-anchor", "middle")
-      .attr("class", "xtext")
+      .attr('class', 'xtext')
       .text("Gender Wage Gap (%) ");
 
   // text label for the y axis
@@ -437,9 +438,9 @@ function ReverseScatter(data) {
     .attr('font-weight', "bold")
 
     // Add subtitle:
-    svg.append("g").attr("transform", "translate(260, 30)")
+    svg.append("g").attr("transform", "translate(290, 30)")
      .append("text")
-     .text("Even after (higher) taxes, households in countries with more female LFP are, on average, wealthier")            
+     .text("Even after (higher) taxes, households in countries with higher female LFP tend to be wealthier")            
      .attr("text-anchor", "middle")
      .attr("dx", ".5em")
      .attr("dy", "1.5em")
