@@ -77,7 +77,7 @@ function MovingLFPSeries(dataset) {
         .on("mouseover", function(d, i) {
             svg.append("text")
               .attr("class", "title-text")
-              .style("fill", color(i))        
+              .style("fill", Regcolor(i))        
               .text(d.name)
               .attr("text-anchor", "middle")
               .attr("x", (width-margin)/2)
@@ -130,8 +130,8 @@ function MovingLFPSeries(dataset) {
               .text(String);
 
       /* Add Axis into SVG */
-      var xAxis = d3.axisBottom(xScale).ticks(5);
-      var yAxis = d3.axisLeft(yScale).ticks(5);
+      var xAxis = d3.axisBottom(xScale).tickFormat(d3.format("d")).ticks(10);
+      var yAxis = d3.axisLeft(yScale).ticks(10);
 
       svg.append("g")
         .attr("class", "x axis")
@@ -142,12 +142,12 @@ function MovingLFPSeries(dataset) {
         .attr("class", "y axis")
         .call(yAxis)
         .append('text')
-        .attr("y", -25)
-        .attr("x",-60)
+        .attr("y", -35)
+        .attr("x",-90)
         .attr("transform", "rotate(-90)")
         .attr("fill", "#000")
         .attr("font-family",  "Garamond")
-        .attr('font-size', 14)
+        .attr('font-size', 16)
         .text("Female LFP (%)");
 
       // Add title
@@ -158,18 +158,26 @@ function MovingLFPSeries(dataset) {
         .attr('class', 'title')
         .attr('font-weight', "bold");
 
-  // Add subtitle:
-    svg.append("g").attr("transform", "translate(290, -60)")
-     .append("text")
-     .text("Female LFP has increased in all regions accross OECD countries since the 80's. But it has been especially high in Nordic countries.")            
-     .attr("text-anchor", "middle")
-     .attr("dx", ".5em")
-     .attr("dy", "1.5em")
-     .attr('class', 'subtitle')
-     .attr('font-size', 15)
-     .attr('stroke', '#799c94')
-     .attr('opacity', 0.85)
-     .call(wrap, 1);
+      // Add subtitle:
+        svg.append("g").attr("transform", "translate(290, -60)")
+         .append("text")
+         .text("Female LFP has increased in all regions accross OECD countries since the 80's. But it has been especially high in Nordic countries.")            
+         .attr("text-anchor", "middle")
+         .attr("dx", ".5em")
+         .attr("dy", "1.5em")
+         .attr('class', 'subtitle')
+         .attr('font-size', 15)
+         .attr('stroke', '#799c94')
+         .attr('opacity', 0.85)
+         .call(wrap, 1);
+
+        // Add source caption
+  svg.append("text")             
+    .attr("transform", "translate(490, 400)")
+    .style("text-anchor", "middle")
+    .text('Source: OECD Statistics, 1980-2017')
+    .attr('class', 'source')
+    .attr('font-size', 11);
 
        // Helper function to wrap long text in chunks - I modified it to make it general and adjust text chunk sizes 
      // but main idea and snippets are taken from: https://bl.ocks.org/mbostock/7555321

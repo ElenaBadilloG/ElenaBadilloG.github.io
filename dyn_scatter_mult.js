@@ -14,7 +14,7 @@ function ReverseScatter(data) {
 // Basic plot configurations
   const height = 700;
   const width = 800;
-  const margin = {top: 120, left: 80, right: 70, bottom: 80};
+  const margin = {top: 120, left: 80, right: 50, bottom: 80};
 
   const plotWidth = width - margin.right - margin.left;
   const plotHeight = height - 2*margin.top;
@@ -32,6 +32,7 @@ function ReverseScatter(data) {
 
   const xaxden = 1.3
   const xaxsp = 560
+
 
 // Domain, Range, and Scales
   var xD = data.reduce((d, row) => {
@@ -53,6 +54,10 @@ function ReverseScatter(data) {
   var svg = d3.select('#dynscatter').append('svg')
     .attr('width', plotWidth).attr('height', plotHeight);
 
+  var tooltip = d3.select("body")
+    .append("div")
+    .attr('class', 'tooltip');
+
   // Produce scatterplot:
   svg.selectAll(".dot")
       .data(data)
@@ -61,7 +66,15 @@ function ReverseScatter(data) {
       .attr("cx", function(d) {return x(d.Tax); }) // map each center circle (x,y) to tax, LFP pairs in the data
       .attr("cy", function(d) {return y(d.LFP_W);})
       .attr('opacity', 0.85)
-      .attr('fill', d => color(d.Region));
+      .attr('fill', d => color(d.Region))
+      .on("mouseover", function(d) { return tooltip.style("visibility", "visible").text(d.Country).style("left", (d3.event.pageX) + "px")
+      .style("top", (d3.event.pageY - 28) + "px").style("background-color", color(d.Region))  ,
+        d3.select(this).attr("r", 6)})
+      .on("mouseout", function() { return tooltip.style("visibility", "hidden"),
+        d3.select(this).attr("r", 4)});
+
+    
+
 
   // Add X,Y axes with origin in the upper right corner:
   svg.append('g')
@@ -89,6 +102,7 @@ function ReverseScatter(data) {
       .attr("x", 0 - (plotHeight / yaxden))
       .attr("dy", "1em")
       .style("text-anchor", "middle")
+      .attr('class', 'ytext')
       .text(" Female Labor Participation (%) ");
 
   // Add title
@@ -198,7 +212,7 @@ function ReverseScatter(data) {
       d3.selectAll("text.scattertitle").remove();
       d3.selectAll("text.scattersubtitle").remove();
       d3.selectAll("text.xtext").remove();
-      d3.selectAll("text.scatterytext").remove();
+      d3.selectAll("text.ytext").remove();
 
       // Produce new scatterplot:
       updateToGW()
@@ -238,6 +252,7 @@ function ReverseScatter(data) {
       .attr("y", plotHeight/2 + yaxsp*margin.left)
       .attr("x", 0 - (plotHeight / yaxden))
       .attr("dy", "1em")
+      .attr('class', 'ytext')
       .style("text-anchor", "middle")
       .text(" Female Labor Participation (%) ");
 
@@ -328,6 +343,16 @@ function ReverseScatter(data) {
       .style("text-anchor", "middle")
       .attr('class', 'xtext')
       .text(" Job Quality (%) ");
+
+  // text label for the y axis
+  svg.append("text")             
+      .attr("transform", "rotate(-90)")
+      .attr("y", plotHeight/2 + yaxsp*margin.left)
+      .attr("x", 0 - (plotHeight / yaxden))
+      .attr("dy", "1em")
+      .attr('class', 'ytext')
+      .style("text-anchor", "middle")
+      .text(" Female Labor Participation (%) ");
 
   // Add title
   svg.append("text")             
@@ -423,6 +448,7 @@ function ReverseScatter(data) {
       .attr("y", plotHeight/2 + yaxsp*margin.left)
       .attr("x", 0 - (plotHeight / yaxden))
       .attr("dy", "1em")
+      .attr('class', 'ytext')
       .style("text-anchor", "middle")
       .text(" Female Labor Participation (%) ");
 
@@ -452,6 +478,105 @@ function ReverseScatter(data) {
 
 }
 });
+
+    //Create Gov Size button
+    var xbut = 75
+    var ybut = 115
+    var GovButton = svg.append("g")
+      .attr("id", "GovButton")
+      .attr("opacity", 10)
+      .classed("unclickable", true) //Initially not clickable
+      .attr("transform", "translate(" + x.range()[0] + "," + y.range()[1] + ")");
+    
+    GovButton.append("rect")
+      .attr("x", xbut)
+      .attr("y", ybut-15)
+      .attr("width", 125)
+      .attr("height", 25);
+    
+    GovButton.append("text")
+      .attr("x", xbut+2)
+      .attr("y", ybut)
+      .html("Public Sector Size");
+    
+    //Define click behavior
+
+    GovButton.on("click", function() {
+      d3.selectAll(".dot").remove();
+      d3.selectAll("text.scattertitle").remove();
+      d3.selectAll("text.scattersubtitle").remove();
+      d3.selectAll("text.xtext").remove();
+      d3.selectAll("text.ytext").remove();
+
+      // Produce new scatterplot:
+      updateToGov()
+
+  /************ UPDATE 4 **************************/
+
+  function updateToGov() {  
+  
+
+  //Update all circles
+  d3.select('#dynscatter').selectAll("circle")
+    .data(data)
+    .transition()
+    .duration(10)
+    .attr("cx", function(d) {
+      return x(d.Tax);
+    })
+    .attr("cy", function(d) {
+      return y(d.LFP_W);
+    })
+    .attr('fill', d => color(d.Region));
+
+
+  // text label for the x axis
+  svg.append("text")             
+      .attr("transform",
+            "translate(" + (width-xaxsp) + " ," + 
+                           (margin.top/xaxden) + ")")
+      .attr("dy", "1em")
+      .style("text-anchor", "middle")
+      .attr('class', 'xtext')
+      .text("Tax Revenue (%GDP) ");
+
+  // text label for the y axis
+  svg.append("text")             
+      .attr("transform", "rotate(-90)")
+      .attr("y", plotHeight/2 + yaxsp*margin.left)
+      .attr("x", 0 - (plotHeight / yaxden))
+      .attr("dy", "1em")
+      .attr('class', 'ytext')
+      .style("text-anchor", "middle")
+      .text(" Female Labor Participation (%) ");
+
+  // Add title
+  svg.append("text")             
+    .attr("transform",
+          "translate(" + (width-540) + " ," + 
+                         (margin.top-95) + ")")
+    .style("text-anchor", "middle")
+    .text("Public Sector Size and \n Female Labor Participation")
+    .attr('font-size', 20)
+    .attr('class', 'scattertitle')
+    .attr('font-weight', "bold")
+
+    // Add subtitle:
+    svg.append("g").attr("transform", "translate(260, 30)")
+     .append("text")
+     .text("Countries with a higher female LFP have, on average, larger public sectors (higher taxation)")            
+     .attr("text-anchor", "middle")
+     .attr("dx", ".5em")
+     .attr("dy", "1.5em")
+     .attr('class', 'scattersubtitle')
+     .attr('font-size', 15)
+     .attr('stroke', '#799c94')
+     .attr('opacity', 0.85)
+     .call(wrap, 1);
+
+}
+});
+
 
 
 };
