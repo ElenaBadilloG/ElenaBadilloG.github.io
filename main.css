@@ -1,0 +1,110 @@
+html,
+
+head {
+  border-style: solid;
+  border-color: #ccece6;
+  border-width: 10px;
+}
+
+.lfptime{
+	 width: 100%;
+	 height: 100%;
+	 align-items: center;
+	 justify-content: center;
+     display: flex;
+     flex:50;
+  }
+
+body {
+  color: #000;
+  background: #fff;
+  width: 100%;
+  height: 110%;
+  font-family: Garamond;
+  margin: 10px;
+  padding: 10px;
+  border: 10px;
+}
+
+path.line
+{
+    fill: none;
+    stroke: #000;
+}
+
+.dynscatter {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+          #GWGButton {
+        cursor: pointer;
+      }
+      
+      #GWGButton rect {
+        fill: #ccc;
+      }
+      
+      #GWGButton text {
+        font-family: Garamond, sans-serif;
+        font-size: 14px;
+        fill: black;
+      }
+      
+      #GWGButton:hover rect {
+        fill: '#12939A';
+      }
+
+
+
+          #JQButton {
+        cursor: pointer;
+      }
+      
+      #JQButton rect {
+        fill: #ccc;
+      }
+      
+      #JQButton text {
+        font-family: Garamond, sans-serif;
+        font-size: 14px;
+        fill: black;
+      }
+      
+      #JQButton:hover rect {
+        fill: '#12939A';
+      }
+
+
+            #IncButton {
+        cursor: pointer;
+      }
+      
+      #IncButton rect {
+        fill: #ccc;
+      }
+      
+      #IncButton text {
+        font-family: Garamond, sans-serif;
+        font-size: 14px;
+        fill: black;
+      }
+      
+      #IncButton:hover rect {
+        fill: '#12939A';
+      }
+
+title, p, h1, h2, h3, h4, h5, h6 {
+ font-family: Garamond;
+ }
+ title {font-size: 4em; }
+ p  { font-size: 1.0em; }
+ h1 { font-size: 1.8em; }
+ h2 { font-size: 1.5em; }
+ h3 { font-size: 1.1em ; }
+ h4 { font-size: 1.0em; }
+ h5 { font-size: 0.9em; }
+ h6 { font-size: 0.8em; }
