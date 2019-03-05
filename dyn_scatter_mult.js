@@ -32,6 +32,7 @@ function ReverseScatter(data) {
 
   const xaxden = 1.3
   const xaxsp = 560
+  const trans_duration = 1000
 
 
 // Domain, Range, and Scales
@@ -226,7 +227,7 @@ function ReverseScatter(data) {
   d3.select('#dynscatter').selectAll("circle")
     .data(data)
     .transition()
-    .duration(10)
+    .duration(trans_duration)
     .attr("cx", function(d) {
       return x(d.Gap);
     })
@@ -324,7 +325,7 @@ function ReverseScatter(data) {
   d3.select('#dynscatter').selectAll("circle")
     .data(data)
     .transition()
-    .duration(10)
+    .duration(trans_duration)
     .attr("cx", function(d) {
       return x(d.JobQuality);
     })
@@ -422,7 +423,7 @@ function ReverseScatter(data) {
   d3.select('#dynscatter').selectAll("circle")
     .data(data)
     .transition()
-    .duration(10)
+    .duration(trans_duration)
     .attr("cx", function(d) {
       return x(d.Inc);
     })
@@ -520,7 +521,7 @@ function ReverseScatter(data) {
   d3.select('#dynscatter').selectAll("circle")
     .data(data)
     .transition()
-    .duration(10)
+    .duration(trans_duration)
     .attr("cx", function(d) {
       return x(d.Tax);
     })
