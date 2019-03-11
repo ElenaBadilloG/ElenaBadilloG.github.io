@@ -1,7 +1,7 @@
 // Basic plot configurations
   const H = 800;
   const W = 1000;
-  const MARG = {top: 120, left: 80, right: 50, bottom: 80};
+  const MARG = {top: 120, left: 80, right: 80, bottom: 120};
 
   const plotWidth = W - MARG.right - MARG.left;
   const plotHeight = H - 2*MARG.top;
@@ -36,6 +36,7 @@ function MakeScatter(data) {
       d3.selectAll(".xax").remove();
       d3.selectAll(".source2").remove();
       d3.selectAll(".legText2").remove();
+      d3.selectAll(".buttontxt").remove();
 
   const svg = d3.select('#govscatter')
   .append('svg')
@@ -126,27 +127,38 @@ function MakeScatter(data) {
       .text(" Gender Labor Participation Gap (%) ");
 
   // Add subtitle:
-    svg.append("g").attr("transform", "translate(310, 30)")
+    svg.append("g").attr("transform", "translate(330, 30)")
      .append("text")
-     .text(" ")            
+     .text("  Explore how different government expenditures (social benefits, education, defense, economic affairs, health, etc.) relate to the gender LFP gap: ")            
      .attr("text-anchor", "middle")
      .attr("dx", ".5em")
      .attr("dy", "1.5em")
      .attr('class', 'scattersubtitle2')
-     .attr('font-size', 15)
+     .attr('font-size', 16)
      .attr('stroke', '#799c94')
      .attr('opacity', 0.85)
-     .call(wrap, 1);
+     .call(wrap, 1.1);
 
   // Add source caption
   svg.append("text")             
     .attr("transform",
           "translate(" + (W-510) + " ," + 
-                         (MARG.top + 425) + ")")
+                         (MARG.top + 435) + ")")
     .style("text-anchor", "middle")
     .text('Source: OECD Statistics, 2015')
     .attr('class', 'source2')
     .attr('font-size', 11);
+
+  // Add button choice header
+  svg.append("text")             
+    .attr("transform",
+          "translate(" + (W-250) + " ," + 
+                         (MARG.top) + ")")
+    .style("text-anchor", "middle")
+    .text('Public Expenditure Types')
+    .attr('class', 'buttontxt')
+    .attr('stroke', '#799c94')
+    .attr('font-size', 18);
 
   // Add legend
   const legend = svg.selectAll('.rect').data(regs);
