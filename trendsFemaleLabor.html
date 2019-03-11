@@ -6,21 +6,61 @@
   <link rel="stylesheet" type="text/css" href="main.css">
 </head>
 <body>
-  <h1>Interactive Visualization Project: Check 1</h1>
-  <h4>    Elena Badillo Goicoechea |  March 03, 2019  </h4>
+  <h1>Interactive Visualization Project: Check 2</h1>
+  <h4>    Elena Badillo Goicoechea |  March 10, 2019  </h4>
   <h2>Introduction</h2>
 
 <p> In this analysis we explore some trends that female labour force participation (LFP) has followed since 1980 in OECD countries.
-</br>After finding that WLFP has grown at very different rates, and up to various levels, 
+</br>After finding that female LFP has grown at very different rates, and up to various levels, 
 in different regions of the world –being </br> particularly high in Nordic countries– we use visualization tools to dig deeper into some potential partial explanations.</p> 
 
 <p> For example, could public policies inducing the substitution of leisure or housework with market labor -such as childcare- </br>  help explain higher these country-level differences?</p>
+
 <script src="https://d3js.org/d3.v4.js"></script>
+<script src="https://d3js.org/d3-color.v1.min.js"></script>
+<script src="https://d3js.org/d3-interpolate.v1.min.js"></script>
+<script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+
   <div id="lfptime"></div>
     <p> First, some simple correlations. Choose a variable to explore how it relates with female LFP (remember: this is merely exploratory!). </br> We can start with public sector size, as measured by total taxation ratio to GDP... </p>
+
   <script src="lfpseries.js"></script>
+
   <div id="dynscatter"></div>
   <script src="dyn_scatter_mult.js"></script>
+
+  <h3> What Kind of Public Expenditures? </h3>
+<p> So, government size is correlated with female LFP. That doesn't tell us much yet: what are the mechanisms through which </br> government spending affects female LFP?
+</br> It might be worth it to dig a bit deeper and break public expenditures by type.</p>
+
+<p> Are all of them correlated with the gender LFP gap? </br>
+  We can explore this by choosing any spending type with the buttons below...</br> </br> 
+(P.S. gender LFP gap -analogous to the gender wage gap- is male LFP as a fraction of female LFP) </p> 
+
+  <div id="govscatterbuttons"></div>
+  <div id="govscatter"></div>
+  <script src="gov_spend.js"></script>
+
+
+  <h3> Treemap: Daily Time Use Per Gender </h3>
+<p> So, almost all spending types appear uncorrelated (bunch of scatter clouds) with gender LFP gap - except one: Social benefits/transfers and education </p> 
+<p> Focusing on the former, if it is the case that higher public spending on family policies incentivizes women to enter the workforce (i.e. public spending  </br> 
+as a "causal mechanism"),  then that should be reflected in the way they allocate their time during the day, expecting  more even gender distributions </br> of daily unpaid work in countries with higher social expenditure levels. </br>
+(P.S. Unpaid work mainly includes child and elderly care, as well as housework) </p> 
+
+<p> As we can explore in the treemap below, there are wide time use differences between genders in "big family-spending" countries and the rest, </br> with Mexico, Turkey and Japan being at the opposite extreme than the Nordics - in line with their respective social spending distributions.</p>
+<p> It is quite clear, though, that, globally, women spend more daily time engaging in unpaid labor and less in paid work, study, and leisure.</p>
+
+  <div id="treelegend"></div>
+  <div id="timetreemap"></div>
+
+  <form>
+  <label><input type="radio" id = "UNPinput" name="mode" value="Value" checked> Unpaid Labor</label>
+  <label><input type="radio" id = "PSinput" name="mode" value="Value"> Paid Work or Study </label>
+  <label><input type="radio" id = "LSinput" name="mode" value="Value"> Leisure </label>
+</form>
+
+  <script src="timetreemap.js"></script>
   
 </body>
 </html>

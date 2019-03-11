@@ -3,7 +3,7 @@
 // Syntax for error-handling using fetch from: https://gist.github.com/odewahn/5a5eeb23279eed6a80d7798fdb47fe91
 document.addEventListener('DOMContentLoaded', () => {
   // this uses a structure called a promise to asyncronously get the cars data set
-  fetch('./lfp.json')
+  fetch('./lfpGap.json')
     .then(response => response.json()  //we only get here if there is no error
   )
     // now that the data is actually understood as json we send it to your function
@@ -51,7 +51,8 @@ function MovingLFPSeries(dataset) {
         .range([0, width-margin]);
 
       var yScale = d3.scaleLinear()
-        .domain([0, d3.max(data[0].values, d => d.normLFPW)])
+        //.domain([0,100])
+        .domain([0, d3.max(data[0].values, d => d.FLFP)])
         .range([height-margin, 0]);
 
       /* Add SVG */
@@ -65,7 +66,7 @@ function MovingLFPSeries(dataset) {
       /* Add line into SVG */
       var line = d3.line()
         .x(d => xScale(d.Time))
-        .y(d => yScale(d.normLFPW));
+        .y(d => yScale(d.FLFP));
 
       let lines = svg.append('g')
         .attr('class', 'lines');
@@ -120,10 +121,10 @@ function MovingLFPSeries(dataset) {
             .attr('width', 20)
             .attr('fill', function(d, i) {return Regcolor(i);});
             // legend texts
-            const leg_txt = svg.selectAll(null).data(regs);
-              leg_txt.enter()
+            const legTxt = svg.selectAll(null).data(regs);
+              legTxt.enter()
               .append('text')
-              .attr('class', 'leg_text')
+              .attr('class', 'legText')
               .attr("x", function(d, i) {return leg_x+25;})
               .attr("y", function(d, i) {return (i * 20 + leg_y+15);})
               .attr('font-size', 14)

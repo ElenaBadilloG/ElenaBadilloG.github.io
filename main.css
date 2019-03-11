@@ -123,6 +123,32 @@ path.line
         fill: '#12939A';
       }
 
+
+                #Button {
+        cursor: pointer;
+      }
+      
+      #Button rect {
+        fill: #ccc;
+        padding: 2px;
+        border-radius: 2px;
+      }
+      
+      #Button text {
+        font-family: Garamond;
+        font-size: 14px;
+        text-align: center;
+        fill: black;
+      }
+      
+      #Button:hover rect {
+        fill: '#12939A';
+      }
+
+      
+
+
+
 .tooltip {
     position: absolute;
     font-family: Garamond;
@@ -134,7 +160,7 @@ path.line
     opacity: 0.65;
     border-radius: 2px;
     font-weight: bold;
-    font: 12px sans-serif;
+    font: 12px Garamond;
     color: white;
     pointer-events: none;
 }
@@ -150,3 +176,40 @@ title, p, h1, h2, h3, h4, h5, h6 {
  h4 { font-size: 1.0em; }
  h5 { font-size: 0.9em; }
  h6 { font-size: 0.8em; }
+
+form {
+  position: relative;
+  top: -550px;
+  left: 700px;
+}
+
+
+.node {
+  border: solid 1px white;
+  box-sizing: border-box;
+  color: black;
+  font-weight: bold;
+  font: 13px Garamond;
+  line-height: 1em;
+  overflow: hidden;
+  position: absolute;
+  white-space: pre;
+  background: #ddd;
+  text-indent: 2px;
+}
+
+.node-label{
+  color: white;
+  },
+.node-value {
+  margin: 4px;
+}
+
+.node-value {
+  margin-top: -2px;
+}
+
+.node-value {
+  font-weight: bold;
+
+}

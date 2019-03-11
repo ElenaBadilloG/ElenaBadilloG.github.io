@@ -12,8 +12,8 @@ document.addEventListener('DOMContentLoaded', () => {
 function ReverseScatter(data) {
   
 // Basic plot configurations
-  const height = 700;
-  const width = 800;
+  const height = 800;
+  const width = 950;
   const margin = {top: 120, left: 80, right: 50, bottom: 80};
 
   const plotWidth = width - margin.right - margin.left;
@@ -28,7 +28,7 @@ function ReverseScatter(data) {
   const leg_y = 160; 
   const leg_x = 120
   const yaxden = 1.5
-  const yaxsp = 3.2
+  const yaxsp = 4
 
   const xaxden = 1.3
   const xaxsp = 560
@@ -49,7 +49,7 @@ function ReverseScatter(data) {
   var x = d3.scaleLinear().domain([0, xD.max+10])
     .range([plotHeight, margin.top]).nice();
 
-  var y = d3.scaleLinear().domain([yD.max+10, 0])
+  var y = d3.scaleLinear().domain([yD.max+5, 30])
   .range([plotHeight, margin.top]).nice();
 
   var svg = d3.select('#dynscatter').append('svg')
@@ -63,16 +63,16 @@ function ReverseScatter(data) {
   svg.selectAll(".dot")
       .data(data)
       .enter().append("circle")
-      .attr("r", 4) //radius for every dot
+      .attr("r", 6) //radius for every dot
       .attr("cx", function(d) {return x(d.Tax); }) // map each center circle (x,y) to tax, LFP pairs in the data
       .attr("cy", function(d) {return y(d.LFP_W);})
       .attr('opacity', 0.85)
       .attr('fill', d => color(d.Region))
       .on("mouseover", function(d) { return tooltip.style("visibility", "visible").text(d.Country).style("left", (d3.event.pageX) + "px")
       .style("top", (d3.event.pageY - 28) + "px").style("background-color", color(d.Region))  ,
-        d3.select(this).attr("r", 6)})
+        d3.select(this).attr("r", 4)})
       .on("mouseout", function() { return tooltip.style("visibility", "hidden"),
-        d3.select(this).attr("r", 4)});
+        d3.select(this).attr("r", 6)});
 
     
 
@@ -130,8 +130,8 @@ function ReverseScatter(data) {
   // Add source caption
   svg.append("text")             
     .attr("transform",
-          "translate(" + (width-420) + " ," + 
-                         (margin.top + 335) + ")")
+          "translate(" + (width-480) + " ," + 
+                         (margin.top + 435) + ")")
     .style("text-anchor", "middle")
     .text('Source: OECD Statistics, 2015')
     .attr('class', 'source')
@@ -149,10 +149,10 @@ function ReverseScatter(data) {
   .attr('fill', function(d, i) {return color(i);});
 
   // legend texts
-  const leg_txt = svg.selectAll(null).data(regs);
-    leg_txt.enter()
+  const legTxt = svg.selectAll(null).data(regs);
+    legTxt.enter()
     .append('text')
-    .attr('class', 'leg_text')
+    .attr('class', 'legText')
     .attr("x", function(d, i) {return leg_x+25;})
     .attr("y", function(d, i) {return (i * 20 + leg_y+15);})
     .attr('font-size', 14)
