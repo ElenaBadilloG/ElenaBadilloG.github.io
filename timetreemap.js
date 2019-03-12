@@ -135,7 +135,7 @@ function MakeTree(data) {
         .style("height", (d) => Math.max(0, d.y1 - d.y0  - 1) + "px")
         .style("background", (d) => color(d.data.Sex))
         .style("opacity", (d) => xScale(d.data.FamilySpending))
-        .text((d) => d.data.Country);
+        .text((d) => (d.data.Country + '\n'+'\n'+'\n'+ Math.round(d.data.hours*10)/10 + '  hrs'));
 
       }
 
