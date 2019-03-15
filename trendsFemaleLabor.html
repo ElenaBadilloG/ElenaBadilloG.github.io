@@ -7,7 +7,7 @@
 </head>
 <body>
   <h1>Interactive Visualization Project: Check 2</h1>
-  <h4>    Elena Badillo Goicoechea |  March 11, 2019  </h4>
+  <h4>    Elena Badillo Goicoechea |  March 10, 2019  </h4>
   <h2>Introduction</h2>
 
 <p> In this analysis we explore some trends that female labour force participation (LFP) has followed since 1980 in OECD countries.
@@ -30,20 +30,22 @@ in different regions of the world –being </br> particularly high in Nordic cou
   <script src="dyn_scatter_mult.js"></script>
 
   <h3> What Kind of Public Expenditures? </h3>
-<p> So, government size is correlated with female LFP. That doesn't tell us much yet: what are the mechanisms through which </br> government spending affects female LFP?
+<p> So, government size is correlated with female LFP. That doesn't tell us much yet: what are the mechanisms through which </br> government spending affects female LFP...
 </br> It might be worth it to dig a bit deeper and break public expenditures by type.</p>
 
-<p> Are all government spending branches correlated with the gender LFP gap? </br>
+<p> Are all government sopending branches correlated with the gender LFP gap? </br>
   We can explore this by choosing any spending type with the buttons below...</br> </br> 
 (P.S. gender LFP gap -analogous to the gender wage gap- is male LFP as a fraction of female LFP) </p> 
 
-  <div id="govscatterbuttons"></div>
-  <div id="govscatter"></div>
-  <script src="gov_spend.js"></script>
+<div id="slider"></div>
+<div id="dropdw-container"></div>
+<div id="govdens"></div>
+<script src="gov_dens.js"></script>
 
 
   <h3> Treemap: Daily Time Use Per Gender </h3>
-<p> So, almost all spending types appear uncorrelated (bunch of scatter clouds) with gender LFP gap - except one: Social benefits/transfers </p> 
+<p> So, once unpacking total public expenditures by branch, almost all spending types appear pretty uncorrelated with gender LFP gap.
+</p> 
 <p> If it is the case that higher public social welfare spending incentivizes women to enter (or stay in)  the workforce (i.e. public spending  </br> 
 as a "causal mechanism"),  then that should be reflected in the way they allocate their time during the day, expecting  more even gender distributions </br> of daily unpaid work in countries with higher social expenditure levels. </br>
 (P.S. Unpaid work mainly includes child and elderly care, as well as housework) </p> 
@@ -61,7 +63,8 @@ as a "causal mechanism"),  then that should be reflected in the way they allocat
 </form>
 
   <script src="timetreemap.js"></script>
-  
+
+
 </body>
 </html>
 
