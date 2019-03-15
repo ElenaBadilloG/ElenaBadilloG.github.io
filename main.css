@@ -4,7 +4,9 @@ head {
   border-style: solid;
   border-color: #ccece6;
   border-width: 10px;
+  font-family: Garamond;
 }
+
 
 .lfptime{
 	 width: 100%;
@@ -40,98 +42,25 @@ path.line
   justify-content: center;
 }
 
-          #GWGButton {
+.scattersubtitle {
+ fill: #799c94;
+ font-size: 16px;
+ font-weight: bold;
+text-align: center;
+}
+
+     
+
+ #Button {
         cursor: pointer;
-      }
-      
-      #GWGButton rect {
-        fill: #ccc;
-      }
-      
-      #GWGButton text {
-        font-family: Garamond, sans-serif;
-        font-size: 14px;
-        fill: black;
-      }
-      
-      #GWGButton:hover rect {
-        fill: '#12939A';
-      }
-
-
-
-          #JQButton {
-        cursor: pointer;
-      }
-      
-      #JQButton rect {
-        fill: #ccc;
-      }
-      
-      #JQButton text {
-        font-family: Garamond, sans-serif;
-        font-size: 14px;
-        fill: black;
-        text-align: center;
-      }
-      
-      #JQButton:hover rect {
-        fill: '#12939A';
-        text-align: center;
-      }
-
-
-            #IncButton {
-        cursor: pointer;
-      }
-      
-      #IncButton rect {
-        fill: #ccc;
-        text-align: center;
-      }
-      
-      #IncButton text {
-        font-family: Garamond;
-        font-size: 14px;
-        fill: black;
-        text-align: center;
-      }
-      
-      #IncButton:hover rect {
-        fill: '#12939A';
-      }
-
-
-                #GovButton {
-        cursor: pointer;
-      }
-      
-      #GovButton rect {
-        fill: #ccc;
-        padding: 2px;
-        border-radius: 2px;
-      }
-      
-      #GovButton text {
-        font-family: Garamond;
-        font-size: 14px;
-        text-align: center;
-        fill: black;
-      }
-      
-      #GovButton:hover rect {
-        fill: '#12939A';
-      }
-
-
-                #Button {
-        cursor: pointer;
+        border-radius: 50%;
+    
       }
       
       #Button rect {
-        fill: #ccc;
+        fill: #C6D2D2;
         padding: 2px;
-        border-radius: 2px;
+        
       }
       
       #Button text {
@@ -139,10 +68,6 @@ path.line
         font-size: 14px;
         text-align: center;
         fill: black;
-      }
-      
-      #Button:hover rect {
-        fill: '#12939A';
       }
 
       

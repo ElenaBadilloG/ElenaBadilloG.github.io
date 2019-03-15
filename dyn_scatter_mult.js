@@ -122,8 +122,6 @@ function ReverseScatter(data) {
      .attr("dx", ".5em")
      .attr("dy", "1.5em")
      .attr('class', 'scattersubtitle')
-     .attr('font-size', 15)
-     .attr('stroke', '#799c94')
      .attr('opacity', 0.85)
      .call(wrap, 1);
 
@@ -157,6 +155,8 @@ function ReverseScatter(data) {
     .attr("y", function(d, i) {return (i * 20 + leg_y+15);})
     .attr('font-size', 14)
     .text(String);
+
+
   
   // Helper function to wrap long text in chunks - I modified it to make it general and adjust text chunk sizes 
      // but main idea and snippets are taken from: https://bl.ocks.org/mbostock/7555321
@@ -190,7 +190,7 @@ function ReverseScatter(data) {
     var xbut = 75
     var ybut = 5
     var GWGButton = svg.append("g")
-      .attr("id", "GWGButton")
+      .attr("id", "Button")
       .attr("opacity", 10)
       .classed("unclickable", true) //Initially not clickable
       .attr("transform", "translate(" + x.range()[0] + "," + y.range()[1] + ")");
@@ -271,8 +271,6 @@ function ReverseScatter(data) {
      .attr("dx", ".5em")
      .attr("dy", "1.5em")
      .attr('class', 'scattersubtitle')
-     .attr('font-size', 15)
-     .attr('stroke', '#799c94')
      .attr('opacity', 0.85)
      .call(wrap, 1);
 
@@ -283,7 +281,7 @@ function ReverseScatter(data) {
     var xJQbut = 75
     var yJQbut = 45
     var JQButton = svg.append("g")
-      .attr("id", "JQButton")
+      .attr("id", "Button")
       .attr("opacity", 10)
       .classed("unclickable", true) //Initially not clickable
       .attr("transform", "translate(" + x.range()[0] + "," + y.range()[1] + ")");
@@ -369,9 +367,6 @@ function ReverseScatter(data) {
      .attr("dx", ".5em")
      .attr("dy", "1.5em")
      .attr('class', 'scattersubtitle')
-     .attr('font-size', 15)
-     .attr('stroke', '#799c94')
-     .attr('opacity', 0.85)
      .call(wrap, 1);
 
 }
@@ -382,7 +377,7 @@ function ReverseScatter(data) {
     var yIncbut = 65
 
     var IncButton = svg.append("g")
-      .attr("id", "IncButton")
+      .attr("id", "Button")
       .attr("opacity", 10)
       .classed("unclickable", true) //Initially not clickable
       .attr("transform", "translate(" + x.range()[0] + "," + y.range()[1] + ")");
@@ -462,14 +457,11 @@ function ReverseScatter(data) {
     // Add subtitle:
     svg.append("g").attr("transform", "translate(290, 30)")
      .append("text")
-     .text("Even after (higher) taxes, households in countries with higher female LFP tend to be wealthier")            
+     .text("Even after (higher) taxes,  households in countries with \n higher female LFP tend to be wealthier")            
      .attr("text-anchor", "middle")
      .attr("dx", ".5em")
      .attr("dy", "1.5em")
      .attr('class', 'scattersubtitle')
-     .attr('font-size', 15)
-     .attr('stroke', '#799c94')
-     .attr('opacity', 0.85)
      .call(wrap, 1);
 
 }
@@ -479,7 +471,7 @@ function ReverseScatter(data) {
     var xbut = 75
     var ybut = 115
     var GovButton = svg.append("g")
-      .attr("id", "GovButton")
+      .attr("id", "Button")
       .attr("opacity", 10)
       .classed("unclickable", true) //Initially not clickable
       .attr("transform", "translate(" + x.range()[0] + "," + y.range()[1] + ")");
@@ -560,14 +552,11 @@ function ReverseScatter(data) {
     // Add subtitle:
     svg.append("g").attr("transform", "translate(260, 30)")
      .append("text")
-     .text("Countries with a higher female LFP have, on average, larger public sectors (higher taxation)")            
+     .text("Countries with higher female LFP have, on average, larger public sectors")            
      .attr("text-anchor", "middle")
      .attr("dx", ".5em")
      .attr("dy", "1.5em")
      .attr('class', 'scattersubtitle')
-     .attr('font-size', 15)
-     .attr('stroke', '#799c94')
-     .attr('opacity', 0.85)
      .call(wrap, 1);
 
 }

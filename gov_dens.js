@@ -15,8 +15,8 @@ var vMap= {'Social transfers/benefits':"gov_exp_socALL.json",
 
 var labelArea = 160;
     var chart,
-            wid = 400,
-            bar_height = 50,
+            wid = 380,
+            bar_height = 45,
             hei = bar_height + 500;
     var rightOffset = wid + labelArea;
 
@@ -119,9 +119,9 @@ var labelArea = 160;
                 .on("mouseout", function() { return tooltip.style("visibility", "hidden"), d3.select(this).attr("opacity", 0.75)})
                                 .transition()
 
-                chart.append("text").attr("x",wid/3).attr("y", 10).attr("class","title").text("Gender LFP Gap (%)");
-                chart.append("text").attr("x",wid/4+rightOffset).attr("y", 10).attr("class", "title").text("Public Expenditure by Type (% Total Exp)");
-                chart.append("text").attr("x",wid+labelArea/3).attr("y", 10).attr("class", "title").text("Country");
+                chart.append("text").attr("x",wid/3).attr("y", 12).attr("class","title").text("Gender LFP Gap (%)");
+                chart.append("text").attr("x",wid/4+rightOffset).attr("y", 12).attr("class", "title").text("Public Expenditure by Type (% Total Exp)");
+                chart.append("text").attr("x",wid+labelArea/3).attr("y", 12).attr("class", "title").text("Country");
 
     ////////// Add slider //////////
 
@@ -141,7 +141,7 @@ var labelArea = 160;
 
                 var slider = svgSlider.append("g")
                     .attr("class", "slider")
-                    .attr("transform", "translate(" + 40 + "," + slidhei / 2 + ")");
+                    .attr("transform", "translate(" + 40 + "," + slidhei / 1.5 + ")");
 
                 slider.append("line")
                     .attr("class", "track")
@@ -305,7 +305,9 @@ var labelArea = 160;
           
         }
       }
-                var dropdown = d3.select("#dropdw-container");
+                var dropdown = d3.select("#dropdw-container")
+                .attr("x", 20)
+                .attr("y", 0);
 
                 dropdown.append("select")
                     .selectAll("option")

@@ -6,10 +6,10 @@
   <link rel="stylesheet" type="text/css" href="main.css">
 </head>
 <body>
-  <h2>Global Trends in Female Labor Participation </h2>
-<h3>Interactive Visualization Project: Class Presentation</h3>
+  <h1>Global Trends in Female Labor Participation </h1>
+<h2>Interactive Visualization Project: Class Presentation</h2>
   <h4>    Elena Badillo Goicoechea |  March 15, 2019  </h4>
-  <h2>Introduction</h2>
+ 
 
 <p> In this analysis we explore some trends that female labour force participation (LFP) has followed since 1980 in OECD countries.
 </br>After finding that female LFP has grown at very different rates, and up to varying levels, 
@@ -26,7 +26,7 @@ in different regions of the world –being </br> particularly high in Nordic cou
     <p> First, some simple correlations. Choose a variable to explore how it relates with female LFP (remember: this is merely exploratory!). </br> We can start with public sector size, as measured by total taxation ratio to GDP... </p>
 
   <script src="lfpseries.js"></script>
-
+<div id="slider_scatt"></div>
   <div id="dynscatter"></div>
   <script src="dyn_scatter_mult.js"></script>
 
@@ -35,12 +35,13 @@ in different regions of the world –being </br> particularly high in Nordic cou
 </br> It might be worth it to dig a bit deeper and break public expenditures by type.</p>
 
 <p> Are any spending branches clearly correlated with the gender LFP gap? 
-We can explore this by choosing any spending type with the buttons below...</br> </br> 
+We can explore this by choosing any spending type with the buttons below  </br> and sliding through the years...</br> </br> 
 
 (P.S. gender LFP gap -analogous to the gender wage gap- is male LFP as a fraction of female LFP) </p> 
 
 <div id="slider"></div>
 <div id="dropdw-container"></div>
+ <button id="play-button">Play</button>
 <div id="govdens"></div>
 <script src="gov_dens.js"></script>
 

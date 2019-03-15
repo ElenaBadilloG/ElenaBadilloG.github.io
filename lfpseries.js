@@ -155,10 +155,7 @@ function MovingLFPSeries(dataset, v) {
          .attr("text-anchor", "middle")
          .attr("dx", ".5em")
          .attr("dy", "1.5em")
-         .attr('class', 'subtitle')
-         .attr('font-size', 15)
-         .attr('stroke', '#799c94')
-         .attr('opacity', 0.85)
+         .attr('class', 'scattersubtitle')
          .call(wrap, 1);
 
         // Add source caption
@@ -201,11 +198,66 @@ function MovingLFPSeries(dataset, v) {
 
 
   //Create  button
-    var xbut = 420
+    var xbut = 400
     var ybut = 5
 
     var AvgButton = svg.append("g")
       .attr("id", "Button")
+      .attr("class", "button")
+      .attr("opacity", 10)
+      .classed("unclickable", true) //Initially not clickable
+      //.attr("transform", "translate(" + x.range()[0] + "," + y.range()[1] + ")");
+    
+    AvgButton.append("rect")
+      .attr("x", xbut)
+      .attr("y", ybut)
+      .attr("width", 200)
+      .attr("height", 30);
+    
+    AvgButton.append("text")
+      .attr("x", xbut+5)
+      .attr("y", ybut+19)
+      .html("Aggregate Female LFP By Region");
+    
+    //Define click behavior
+
+    AvgButton.on("click", function() {
+      d3.selectAll(".line").remove();
+      d3.selectAll(".legrect").remove();
+      d3.selectAll(".legText").remove();
+      d3.selectAll(".button").remove();
+
+   //Create  By Country button
+
+    var BckButton = svg.append("g")
+      .attr("id", "Button")
+      .attr("class", "button")
+      .attr("opacity", 10)
+      .classed("unclickable", true) //Initially not clickable
+    
+    BckButton.append("rect")
+      .attr("x", xbut)
+      .attr("y", ybut)
+      .attr("width", 192)
+      .attr("height", 30);
+    
+    BckButton.append("text")
+      .attr("x", xbut+5)
+      .attr("y", ybut+19)
+      .html("Female LFP By Country");
+    
+    //Define click behavior
+
+    BckButton.on("click", function() {
+      d3.selectAll(".line").remove();
+      d3.selectAll(".legrect").remove();
+      d3.selectAll(".legText").remove();
+      d3.selectAll(".button").remove();
+
+  var AvgButton = svg.append("g")
+      .attr("id", "Button")
+      .attr("border-radius", 12)
+      .attr("class", "button")
       .attr("opacity", 10)
       .classed("unclickable", true) //Initially not clickable
       //.attr("transform", "translate(" + x.range()[0] + "," + y.range()[1] + ")");
@@ -220,13 +272,13 @@ function MovingLFPSeries(dataset, v) {
       .attr("x", xbut+5)
       .attr("y", ybut+19)
       .html("Aggregate Female LFP By Region");
-    
-    //Define click behavior
 
-    AvgButton.on("click", function() {
-      d3.selectAll(".line").remove();
-      d3.selectAll(".legrect").remove();
-      d3.selectAll(".legText").remove();
+      // Produce new scatterplot:
+      d3.json("lfpGap.json", function(error, data) {
+          if (error) throw error;
+              MovingLFPSeries(data,  "Country")
+          })
+    });
 
       // Produce new scatterplot:
       d3.json("av_lfp.json", function(error, data) {
@@ -234,4 +286,4 @@ function MovingLFPSeries(dataset, v) {
               MovingLFPSeries(data, "Region")
           })
     });
-          
+        
