@@ -164,7 +164,7 @@ function MovingLFPSeries(dataset, v) {
     .style("text-anchor", "middle")
     .text('Source: OECD Statistics, 1980-2017')
     .attr('class', 'source')
-    .attr('font-size', 11);
+    .attr('font-size', 12);
    
 
        // Helper function to wrap long text in chunks - I modified it to make it general and adjust text chunk sizes 
