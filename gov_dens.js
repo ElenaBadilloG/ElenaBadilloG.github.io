@@ -184,7 +184,7 @@ var labelArea = 160;
             .append('rect')
             .attr('class', 'leg_rect')
             .attr("x", function(d, i) {return leg_x+123;})
-            .attr("y", function(d, i) {return (i * 20) + leg_y;})
+            .attr("y", function(d, i) {return (i * 20) + leg_y+35;})
             .attr('height', 20)
             .attr('width', 20)
             .attr('fill', function(d, i) {return Regcolor(i);});
@@ -194,7 +194,7 @@ var labelArea = 160;
               .append('text')
               .attr('class', 'legText')
               .attr("x", function(d, i) {return leg_x+25;})
-              .attr("y", function(d, i) {return (i * 20 + leg_y+15);})
+              .attr("y", function(d, i) {return (i * 20 + leg_y+50);})
               .attr('font-size', 14)
               .text(String);
 
