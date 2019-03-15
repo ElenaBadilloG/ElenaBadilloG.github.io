@@ -46,7 +46,7 @@ function ReverseScatter(data) {
     };
   }, {min: Infinity, max: -Infinity});
 
-  var x = d3.scaleLinear().domain([0, xD.max+10])
+  var x = d3.scaleLinear().domain([0, xD.max+5])
     .range([plotHeight, margin.top]).nice();
 
   var y = d3.scaleLinear().domain([yD.max+5, 30])
@@ -230,12 +230,7 @@ function ReverseScatter(data) {
     .duration(trans_duration)
     .attr("cx", function(d) {
       return x(d.Gap);
-    })
-    .attr("cy", function(d) {
-      return y(d.LFP_W);
-    })
-    .attr('fill', d => color(d.Region));
-
+    });
 
   // text label for the x axis
   svg.append("text")             

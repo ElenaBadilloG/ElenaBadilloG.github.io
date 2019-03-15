@@ -1,25 +1,26 @@
 /* global d3 */
+      /* Add SVG */
+      var svg = d3.select("#lfptime").append("svg")
+        .attr("width", (700+90)+"px")
+        .attr("height", (450+90)+"px")
+        .append('g')
+        .attr("transform", `translate(${90}, ${90})`);
 
 // Syntax for error-handling using fetch from: https://gist.github.com/odewahn/5a5eeb23279eed6a80d7798fdb47fe91
 document.addEventListener('DOMContentLoaded', () => {
-  // this uses a structure called a promise to asyncronously get the cars data set
   fetch('./lfpGap.json')
-    .then(response => response.json()  //we only get here if there is no error
+    .then(response => response.json()
   )
-    // now that the data is actually understood as json we send it to your function
-    .then(data => MovingLFPSeries(data))
+    .then(data => MovingLFPSeries(data, "Country"))
   });
 
-function MovingLFPSeries(dataset) {
-
-//Width and height
+function MovingLFPSeries(dataset, v) {
 
     var data = d3.nest()
-                 .key(function(d) { return d.Region; })
+                 .key(function(d) { return d[v]; })
                  .entries(dataset);
       
       const colorRange = ['#12939A', '#79C7E3', '#1A3177', '#FF9833', '#af77d0'];
-      const countries = dataset.map((row) => {return row.Country});
       const regions = dataset.map((row) => {return row.Region}); 
       const regs = Array.from(new Set(regions))
       const Regcolor = d3.scaleOrdinal().domain(regions).range(colorRange);
@@ -34,10 +35,10 @@ function MovingLFPSeries(dataset) {
       const leg_x = 90
 
 
-      var lineOpacity = "0.45";
+      var lineOpacity = "0.75";
       var lineOpacityHover = "0.85";
       var otherLinesOpacityHover = "0.1";
-      var lineStroke = "1.25px";
+      var lineStroke = "1.35px";
       var lineStrokeHover = "2.15px";
 
       var circleOpacity = '0.85';
@@ -52,15 +53,8 @@ function MovingLFPSeries(dataset) {
 
       var yScale = d3.scaleLinear()
         //.domain([0,100])
-        .domain([0, d3.max(data[0].values, d => d.FLFP)])
+        .domain([0, 100])
         .range([height-margin, 0]);
-
-      /* Add SVG */
-      var svg = d3.select("#lfptime").append("svg")
-        .attr("width", (width+margin)+"px")
-        .attr("height", (height+margin)+"px")
-        .append('g')
-        .attr("transform", `translate(${margin}, ${margin})`);
 
 
       /* Add line into SVG */
@@ -68,31 +62,26 @@ function MovingLFPSeries(dataset) {
         .x(d => xScale(d.Time))
         .y(d => yScale(d.FLFP));
 
-      let lines = svg.append('g')
+      var lines = svg.append('g')
         .attr('class', 'lines');
 
+      var tooltip = d3.select("body")
+          .append("div")
+          .attr('class', 'tooltip');
+
       lines.selectAll('.line-group')
-        .data(data).enter()
+        .data(data)
+        .enter()
         .append('g')
         .attr('class', 'line-group')  
-        .on("mouseover", function(d, i) {
-            svg.append("text")
-              .attr("class", "title-text")
-              .style("fill", Regcolor(i))        
-              .text(d.name)
-              .attr("text-anchor", "middle")
-              .attr("x", (width-margin)/2)
-              .attr("y", 5);
-          })
-        .on("mouseout", function(d) {
-            svg.select(".title-text").remove();
-          })
+
         .append('path')
         .attr('class', 'line')  
         .attr('d', d => line(d.values))
         .style('stroke', (d, i) => Regcolor(i))
         .style('opacity', lineOpacity)
         .on("mouseover", function(d) {
+          
             d3.selectAll('.line')
                 .style('opacity', otherLinesOpacityHover);
             d3.selectAll('.circle')
@@ -114,7 +103,7 @@ function MovingLFPSeries(dataset) {
             const legend = svg.selectAll('.rect').data(regs);
             legend.enter()
             .append('rect')
-            .attr('class', 'rect')
+            .attr('class', 'legrect')
             .attr("x", function(d, i) {return leg_x;})
             .attr("y", function(d, i) {return (i * 20) + leg_y;})
             .attr('height', 20)
@@ -179,6 +168,7 @@ function MovingLFPSeries(dataset) {
     .text('Source: OECD Statistics, 1980-2017')
     .attr('class', 'source')
     .attr('font-size', 11);
+   
 
        // Helper function to wrap long text in chunks - I modified it to make it general and adjust text chunk sizes 
      // but main idea and snippets are taken from: https://bl.ocks.org/mbostock/7555321
@@ -208,3 +198,40 @@ function MovingLFPSeries(dataset) {
   });
 }
     }
+
+
+  //Create  button
+    var xbut = 420
+    var ybut = 5
+
+    var AvgButton = svg.append("g")
+      .attr("id", "Button")
+      .attr("opacity", 10)
+      .classed("unclickable", true) //Initially not clickable
+      //.attr("transform", "translate(" + x.range()[0] + "," + y.range()[1] + ")");
+    
+    AvgButton.append("rect")
+      .attr("x", xbut)
+      .attr("y", ybut)
+      .attr("width", 192)
+      .attr("height", 30);
+    
+    AvgButton.append("text")
+      .attr("x", xbut+5)
+      .attr("y", ybut+19)
+      .html("Aggregate Female LFP By Region");
+    
+    //Define click behavior
+
+    AvgButton.on("click", function() {
+      d3.selectAll(".line").remove();
+      d3.selectAll(".legrect").remove();
+      d3.selectAll(".legText").remove();
+
+      // Produce new scatterplot:
+      d3.json("av_lfp.json", function(error, data) {
+          if (error) throw error;
+              MovingLFPSeries(data, "Region")
+          })
+    });
+          

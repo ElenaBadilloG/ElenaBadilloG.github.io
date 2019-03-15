@@ -4,7 +4,7 @@
 'use strict';
 'use strict';
 
-const margin = {top: 40, right: 10, bottom: 10, left: 10},
+const margin = {top: 20, right: 10, bottom: 0, left: 5},
       width = 1050 - margin.left - margin.right,
       height = 550 - margin.top - margin.bottom,
       colorRange = ['#D49A8C', '#A6C1C1']
@@ -45,7 +45,6 @@ function MakeTree(data) {
     const expend = data.map((row) => {return row.FamilySpending}); 
     const exp = Array.from(new Set(expend))
     const expd = exp.sort(d3.ascending)
-    console.log(expd)
 
 	// Add legend
 
@@ -120,7 +119,6 @@ function MakeTree(data) {
       .sum((d) => d.hours);
 
     const tree = treemap(root);
-    console.log(tree)
 
     const node = div.datum(root).selectAll(".node")
         .data(tree.leaves())
@@ -135,7 +133,7 @@ function MakeTree(data) {
         .style("height", (d) => Math.max(0, d.y1 - d.y0  - 1) + "px")
         .style("background", (d) => color(d.data.Sex))
         .style("opacity", (d) => xScale(d.data.FamilySpending))
-        .text((d) => (d.data.Country + '\n'+'\n'+'\n'+ Math.round(d.data.hours*10)/10 + '  hrs'));
+        .text((d) => (d.data.Country + '\n'+'\n'+'\n'+ Math.round(d.data.hours*10)/10 + ' min'));
 
       }
 
