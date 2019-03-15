@@ -82,21 +82,20 @@ function MakeTree(data) {
 		  .enter()
 		  .append('rect')
 		  .attr('class', 'leg_op')
-		  .attr("x", function(d, i) {return (i * 15) + leg_x + 200;})
+		  .attr("x", function(d, i) {return (i * 5) + leg_x + 180;})
 		  .attr("y", function(d, i) {return leg_y;})
 		  .attr('height', 30)
-		  .attr('width', 40)
+		  .attr('width', 10)
 		  .style("fill", function(d, i ) { return opScale(d);});
 
     // Add subtitle:
-    svg.append("g").attr("transform", "translate(290, 20)")
+    svg.append("g").attr("transform", "translate(290, 55)")
      .append("text")
      .attr('class', 'leg_txt_op')
      .text("Family Program Expenditures (% Public Expenditures)")            
-     .attr("dx", ".5em")
+     .attr("dx", "-1.5em")
      .attr("dy", "1.5em")
-     .attr("fill", "white")
-     .attr('font-size', 13);
+     .attr('font-size', 14);
 
 
     var xScale = d3.scaleLinear()
@@ -133,7 +132,7 @@ function MakeTree(data) {
         .style("height", (d) => Math.max(0, d.y1 - d.y0  - 1) + "px")
         .style("background", (d) => color(d.data.Sex))
         .style("opacity", (d) => xScale(d.data.FamilySpending))
-        .text((d) => (d.data.Country + '\n'+'\n'+'\n'+ Math.round(d.data.hours*10)/10 + ' min'));
+        .text((d) => (d.data.Country + '\n'+'\n'+'\n'+ Math.round(d.data.hours*10)/10));
 
       }
 
