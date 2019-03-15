@@ -29,6 +29,11 @@ var labelArea = 160;
 
     function MakeChart(data) { // took some code structure from:  https://bl.ocks.org/kaijiezhou/bac86244017c850034fe
 
+        const colorRange = ['#12939A', '#79C7E3', '#1A3177', '#FF9833', '#af77d0'];
+        const regions = data.map((row) => {return row.Region}); 
+        const regs = Array.from(new Set(regions))
+        const Regcolor = d3.scaleOrdinal().domain(regions).range(colorRange);
+
         var data = data.filter(function(d) {
           return Math.round(d.Time) == Math.round(1996)});
 
@@ -41,10 +46,6 @@ var labelArea = 160;
                 .attr('class', 'barchart')
                 .attr('width', labelArea + wid + wid)
                 .attr('height', hei);
-        const colorRange = ['#12939A', '#79C7E3', '#1A3177', '#FF9833', '#af77d0'];
-        const regions = data.map((row) => {return row.Region}); 
-        const regs = Array.from(new Set(regions))
-        const Regcolor = d3.scaleOrdinal().domain(regions).range(colorRange);
 
 
         xFrom.domain(d3.extent(data, function (d) {
@@ -101,7 +102,9 @@ var labelArea = 160;
         
         var bars = chart.selectAll("rect.right")
                 .data(data);
-                bars.enter().append("rect")
+                bars
+                .enter()
+                .append("rect")
                 .attr("x", rightOffset)
                 .attr("y", yPosByIndex)
                 .attr("class", "right")
@@ -173,9 +176,28 @@ var labelArea = 160;
                     .attr("text-anchor", "middle")
                     .attr("x", 50)
                     .text("Start: 1996")
-                    .attr("transform", "translate(-15," + (-15) + ")")
+                    .attr("transform", "translate(-15," + (-15) + ")");
 
-        
+          // Add legend
+            const legend = chart.selectAll('.leg_rect').data(regs);
+            legend.enter()
+            .append('rect')
+            .attr('class', 'leg_rect')
+            .attr("x", function(d, i) {return leg_x+123;})
+            .attr("y", function(d, i) {return (i * 20) + leg_y;})
+            .attr('height', 20)
+            .attr('width', 20)
+            .attr('fill', function(d, i) {return Regcolor(i);});
+            // legend texts
+            const legTxt = chart.selectAll(null).data(regs);
+              legTxt.enter()
+              .append('text')
+              .attr('class', 'legText')
+              .attr("x", function(d, i) {return leg_x+25;})
+              .attr("y", function(d, i) {return (i * 20 + leg_y+15);})
+              .attr('font-size', 14)
+              .text(String);
+
 
       function update(h) {
 
