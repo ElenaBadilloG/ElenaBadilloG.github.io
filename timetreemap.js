@@ -92,10 +92,10 @@ function MakeTree(data) {
     svg.append("g").attr("transform", "translate(290, 55)")
      .append("text")
      .attr('class', 'leg_txt_op')
-     .text("Family Program Expenditures (% Public Expenditures)")            
-     .attr("dx", "-1.5em")
-     .attr("dy", "1.5em")
-     .attr('font-size', 14);
+     .text("Family Program Expenditures (% Total Exp.)")            
+     .attr("dx", "-3em")
+     .attr("dy", "1.0em")
+     .attr('font-size', 15);
 
 
     var xScale = d3.scaleLinear()
