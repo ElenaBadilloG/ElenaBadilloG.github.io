@@ -1,16 +1,14 @@
 
 // Treemap
 
-'use strict';
-'use strict';
 
-const margin = {top: 20, right: 10, bottom: 0, left: 5},
+const margin = {top: 20, right: 0, bottom: 0, left: 5},
       width = 1050 - margin.left - margin.right,
       height = 550 - margin.top - margin.bottom,
       colorRange = ['#D49A8C', '#A6C1C1']
 const color = d3.scaleOrdinal().domain([-1,1]).range(colorRange);
 const opScale = d3.scaleSequential(d3.interpolateGreys)
-    .domain([1, 50])
+    .domain([1, 15])
 
  // legend position parameters
 const leg_y = 20; 
@@ -26,7 +24,7 @@ const div = d3.select("#timetreemap").append("div")
     .style("left", margin.left + "px")
     .style("top", margin.top + "px");
 
-function MakeTree(data) {
+function MakeTree(data, levels=['Sex', 'Country']) {
 	d3.selectAll(".leg_holder").remove();
 	d3.selectAll(".node").remove();
     d3.selectAll(".leg").remove();
@@ -92,17 +90,15 @@ function MakeTree(data) {
     svg.append("g").attr("transform", "translate(290, 55)")
      .append("text")
      .attr('class', 'leg_txt_op')
-     .text("Family Program Expenditures (% Total Exp.)")            
-     .attr("dx", "-3em")
+     .text("Family Expenditures \n (% Social Exp)")            
+     .attr("dx", "-5em")
      .attr("dy", "1.0em")
      .attr('font-size', 15);
 
 
     var xScale = d3.scaleLinear()
-        .domain([10, 40]) 
-        .range([0.15, 1]);
-
-    var levels = ['Sex', 'Country']
+        .domain([0, 11]) 
+        .range([0.1, 1]);
 
     var nest = d3.nest();
     for (var i = 0; i < levels.length; i++) {
@@ -132,9 +128,34 @@ function MakeTree(data) {
         .style("height", (d) => Math.max(0, d.y1 - d.y0  - 1) + "px")
         .style("background", (d) => color(d.data.Sex))
         .style("opacity", (d) => xScale(d.data.FamilySpending))
-        .text((d) => (d.data.Country + '\n'+'\n'+'\n'+ Math.round(d.data.hours*10)/10));
+        .text((d) => (d.data.Country));
 
-      }
+        //Create Nest button
+        var xbutt = leg_x+400
+        var ybutt = leg_y
+
+    var NestButton = svg.append("g")
+      .attr("id", "GovButton")
+      .attr("opacity", 10);
+    
+    NestButton.append("rect")
+      .attr("x", xbutt)
+      .attr("y", ybutt)
+      .attr("width", 135)
+      .attr("height", 30);
+    
+    NestButton.append("text")
+      .attr("x", xbutt+5)
+      .attr("y", ybutt+18)
+      .html("Nest By Country First");
+    
+    //Define click behavior
+    NestButton.on("click", function() {
+
+      MakeTree(data, levels = ['Country', 'Sex'])});
+}
+
+      
 
 d3.json("treetimeUNP.json", function(error, data) {
   if (error) throw error;
@@ -164,8 +185,8 @@ d3.selectAll("#UNPinput").on("change", function change() {
     d3.json("treetimeUNP.json", function(error, data) {
     if (error) throw error;
 
-      MakeTree(data)})})
-
+      MakeTree(data)})
+})
 
 
 

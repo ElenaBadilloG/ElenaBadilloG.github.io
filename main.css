@@ -50,7 +50,6 @@ text-align: center;
 }
 
      
-
  #Button {
         cursor: pointer;
         border-radius: 50%;
@@ -70,7 +69,65 @@ text-align: center;
         fill: black;
       }
 
+  #LabButton {
+        cursor: pointer;
+        border-radius: 50%;
+    
+      }
       
+      #LabButton rect {
+        fill: #C6D2D2;
+        padding: 2px;
+        
+      }
+      
+      #LabButton text {
+        font-family: Garamond;
+        font-size: 14px;
+        text-align: center;
+        fill: black;
+      }
+
+
+ #QualButton {
+        cursor: pointer;
+        border-radius: 50%;
+    
+      }
+      
+      #QualButton rect {
+        fill: #D3EAD3;
+        padding: 2px;
+        
+      }
+      
+      #QualButton text {
+        font-family: Garamond;
+        font-size: 14px;
+        text-align: center;
+        fill: black;
+      }
+
+   #GovButton {
+
+        border-radius: 17px;
+        cursor: pointer;
+    
+      }
+      
+      #GovButton rect {
+        fill: #EAE8E8;
+        padding: 2px;
+        
+      }
+      
+      #GovButton text {
+        font-family: Garamond;
+        font-size: 14px;
+        text-align: center;
+        fill: black;
+      }
+
 
 .tooltip {
     position: absolute;
@@ -136,6 +193,8 @@ form {
   font-weight: bold;
 
 }
+
+
 
 .barchart {
             margin: 10px;

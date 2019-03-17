@@ -2,7 +2,7 @@
 
 // Syntax for error-handling using fetch from: https://gist.github.com/odewahn/5a5eeb23279eed6a80d7798fdb47fe91
 document.addEventListener('DOMContentLoaded', () => {
-  fetch("fulldf.json")
+  fetch("scatter_df.json")
     .then( response => {
     return response.json()              
   })
@@ -12,8 +12,8 @@ document.addEventListener('DOMContentLoaded', () => {
 function ReverseScatter(data) {
   
 // Basic plot configurations
-  const height = 800;
-  const width = 950;
+  const height = 850;
+  const width = 1000;
   const margin = {top: 120, left: 80, right: 50, bottom: 80};
 
   const plotWidth = width - margin.right - margin.left;
@@ -25,8 +25,8 @@ function ReverseScatter(data) {
   const color = d3.scaleOrdinal().domain(regions).range(colorRange);
   const textWidth = 30;
   // legend position parameters
-  const leg_y = 160; 
-  const leg_x = 120
+  const leg_y = 145; 
+  const leg_x = 90
   const yaxden = 1.5
   const yaxsp = 4
 
@@ -46,7 +46,7 @@ function ReverseScatter(data) {
     };
   }, {min: Infinity, max: -Infinity});
 
-  var x = d3.scaleLinear().domain([0, xD.max+5])
+  var x = d3.scaleLinear().domain([xD.min-5, xD.max+5])
     .range([plotHeight, margin.top]).nice();
 
   var y = d3.scaleLinear().domain([yD.max+5, 30])
@@ -66,7 +66,7 @@ function ReverseScatter(data) {
       .attr("r", 6) //radius for every dot
       .attr("cx", function(d) {return x(d.Tax); }) // map each center circle (x,y) to tax, LFP pairs in the data
       .attr("cy", function(d) {return y(d.LFP_W);})
-      .attr('opacity', 0.85)
+      .attr('opacity', 0.75)
       .attr('fill', d => color(d.Region))
       .on("mouseover", function(d) { return tooltip.style("visibility", "visible").text(d.Country).style("left", (d3.event.pageX) + "px")
       .style("top", (d3.event.pageY - 28) + "px").style("background-color", color(d.Region))  ,
@@ -74,17 +74,16 @@ function ReverseScatter(data) {
       .on("mouseout", function() { return tooltip.style("visibility", "hidden"),
         d3.select(this).attr("r", 6)});
 
-    
-
 
   // Add X,Y axes with origin in the upper right corner:
   svg.append('g')
     .call(d3.axisBottom(x))
+    .attr('class', 'xaxis')
     .attr('transform', `translate(${-10}, 115)`);
 
   svg.append("g")
       .call(d3.axisLeft(y))
-      .attr('transform', `translate(${plotHeight+22}, 15)`);
+      .attr('transform', `translate(${plotHeight+20}, 15)`);
 
   // text label for the x axis
   svg.append("text")             
@@ -99,8 +98,8 @@ function ReverseScatter(data) {
   // text label for the y axis
   svg.append("text")             
       .attr("transform", "rotate(-90)")
-      .attr("y", plotHeight/2 + yaxsp*margin.left)
-      .attr("x", 0 - (plotHeight / yaxden))
+      .attr("y", plotHeight/2 + yaxsp*margin.left + 10)
+      .attr("x", 50 - (plotHeight / yaxden))
       .attr("dy", "1em")
       .style("text-anchor", "middle")
       .attr('class', 'ytext')
@@ -129,11 +128,11 @@ function ReverseScatter(data) {
   svg.append("text")             
     .attr("transform",
           "translate(" + (width-480) + " ," + 
-                         (margin.top + 435) + ")")
+                         (margin.top + 475) + ")")
     .style("text-anchor", "middle")
     .text('Source: OECD Statistics, 2015')
     .attr('class', 'source')
-    .attr('font-size', 11);
+    .attr('font-size', 12);
 
   // Add legend
   const legend = svg.selectAll('.rect').data(regs);
@@ -155,7 +154,6 @@ function ReverseScatter(data) {
     .attr("y", function(d, i) {return (i * 20 + leg_y+15);})
     .attr('font-size', 14)
     .text(String);
-
 
   
   // Helper function to wrap long text in chunks - I modified it to make it general and adjust text chunk sizes 
@@ -185,12 +183,50 @@ function ReverseScatter(data) {
     }
   });
 }
+    var xbut = 85
 
-    //Create Gender Gap button
-    var xbut = 75
+    //Create Job Quality button
+    
     var ybut = 5
+
+    var JQButton = svg.append("g")
+      .attr("id", "LabButton")
+      .attr("opacity", 10)
+      .classed("unclickable", true) //Initially not clickable
+      .attr("transform", "translate(" + x.range()[0] + "," + y.range()[1] + ")");
+    
+    JQButton.append("rect")
+      .attr("x", xbut)
+      .attr("y", ybut-15)
+      .attr("width", 80)
+      .attr("height", 25);
+    
+    JQButton.append("text")
+      .attr("x", xbut+2)
+      .attr("y", ybut)
+      .html(" Job Quality ");
+    
+    //Define click behavior
+
+    JQButton.on("click", function() {
+      d3.selectAll(".dot").remove();
+      d3.selectAll("text.scattertitle").remove();
+      d3.selectAll("text.scattersubtitle").remove();
+      d3.selectAll("text.xtext").remove();
+      d3.selectAll("text.ytext").remove();
+      d3.selectAll(".xaxis").remove();
+
+      // Produce new scatterplot:
+      updateVar("JobQuality", " Job Quality (%) ", "Job Quality ",
+       "Higher female LFP seems correlated with better jobs...")
+  
+});
+    //Create Gender Gap button
+    
+    ybut = ybut + 35
+
     var GWGButton = svg.append("g")
-      .attr("id", "Button")
+      .attr("id", "LabButton")
       .attr("opacity", 10)
       .classed("unclickable", true) //Initially not clickable
       .attr("transform", "translate(" + x.range()[0] + "," + y.range()[1] + ")");
@@ -214,184 +250,107 @@ function ReverseScatter(data) {
       d3.selectAll("text.scattersubtitle").remove();
       d3.selectAll("text.xtext").remove();
       d3.selectAll("text.ytext").remove();
+      d3.selectAll(".xaxis").remove();
 
       // Produce new scatterplot:
-      updateToGW()
+      updateVar("Gap", "Gender Wage Gap (%)", "Gender Wage Gap ",
+       "No clear relationship between gender wage gap and female LFP...")
 
-  /************ UPDATE 1 **************************/
-
-  function updateToGW() {  
-  
-
-  //Update all circles
-  d3.select('#dynscatter').selectAll("circle")
-    .data(data)
-    .transition()
-    .duration(trans_duration)
-    .attr("cx", function(d) {
-      return x(d.Gap);
-    });
-
-  // text label for the x axis
-  svg.append("text")             
-      .attr("transform",
-            "translate(" + (width-xaxsp) + " ," + 
-                           (margin.top/xaxden) + ")")
-      .attr("dy", "1em")
-      .style("text-anchor", "middle")
-      .attr('class', 'xtext')
-      .text("Gender Wage Gap (%) ");
-
-  // text label for the y axis
-  svg.append("text")             
-      .attr("transform", "rotate(-90)")
-      .attr("y", plotHeight/2 + yaxsp*margin.left)
-      .attr("x", 0 - (plotHeight / yaxden))
-      .attr("dy", "1em")
-      .attr('class', 'ytext')
-      .style("text-anchor", "middle")
-      .text(" Female Labor Participation (%) ");
-
-  // Add title
-  svg.append("text")             
-    .attr("transform",
-          "translate(" + (width-540) + " ," + 
-                         (margin.top-95) + ")")
-    .style("text-anchor", "middle")
-    .text("Gender Wage Gap and \n Female Labor Participation")
-    .attr('font-size', 20)
-    .attr('class', 'scattertitle')
-    .attr('font-weight', "bold")
-
-    // Add subtitle:
-    svg.append("g").attr("transform", "translate(260, 30)")
-     .append("text")
-     .text("No clear relationship between gender wage gap and female LFP...")            
-     .attr("text-anchor", "middle")
-     .attr("dx", ".5em")
-     .attr("dy", "1.5em")
-     .attr('class', 'scattersubtitle')
-     .attr('opacity', 0.85)
-     .call(wrap, 1);
-
-}
 });
 
-    //Create Job Quality button
-    var xJQbut = 75
-    var yJQbut = 45
-    var JQButton = svg.append("g")
-      .attr("id", "Button")
+  
+    //Create Extra Hours button
+
+    ybut = ybut + 35
+
+    var ExtraHButton = svg.append("g")
+      .attr("id", "LabButton")
       .attr("opacity", 10)
       .classed("unclickable", true) //Initially not clickable
       .attr("transform", "translate(" + x.range()[0] + "," + y.range()[1] + ")");
     
-    JQButton.append("rect")
-      .attr("x", xJQbut)
-      .attr("y", yJQbut-15)
-      .attr("width", 125)
+    ExtraHButton.append("rect")
+      .attr("x", xbut)
+      .attr("y", ybut-15)
+      .attr("width", 135)
       .attr("height", 25);
     
-    JQButton.append("text")
-      .attr("x", xJQbut+2)
-      .attr("y", yJQbut)
-      .html(" Job Quality ");
+    ExtraHButton.append("text")
+      .attr("x", xbut+2)
+      .attr("y", ybut)
+      .html("Excess Hours Worked");
     
     //Define click behavior
 
-    JQButton.on("click", function() {
+    ExtraHButton.on("click", function() {
       d3.selectAll(".dot").remove();
       d3.selectAll("text.scattertitle").remove();
       d3.selectAll("text.scattersubtitle").remove();
       d3.selectAll("text.xtext").remove();
       d3.selectAll("text.ytext").remove();
+      d3.selectAll(".xaxis").remove();
 
       // Produce new scatterplot:
-      updateToJQ()
+      updateVar("ExcHours", "Employees Working Very Long Hours (%)", "Excess Hours Worked ",
+        " ")
+});
 
-  /************ UPDATE 1 **************************/
+  //Create LM Insecurity button
 
-  function updateToJQ() {  
-  
+    ybut = ybut + 35
 
-  //Update all circles
-  d3.select('#dynscatter').selectAll("circle")
-    .data(data)
-    .transition()
-    .duration(trans_duration)
-    .attr("cx", function(d) {
-      return x(d.JobQuality);
-    })
-    .attr("cy", function(d) {
-      return y(d.LFP_W);
-    })
-    .attr('fill', d => color(d.Region));
+    var LMinsButton = svg.append("g")
+      .attr("id", "LabButton")
+      .attr("opacity", 10)
+      .classed("unclickable", true) //Initially not clickable
+      .attr("transform", "translate(" + x.range()[0] + "," + y.range()[1] + ")");
+    
+    LMinsButton.append("rect")
+      .attr("x", xbut)
+      .attr("y", ybut-15)
+      .attr("width", 138)
+      .attr("height", 25);
+    
+    LMinsButton.append("text")
+      .attr("x", xbut+2)
+      .attr("y", ybut)
+      .html("Labor Market Insecurity");
+    
+    //Define click behavior
 
+    LMinsButton.on("click", function() {
+      d3.selectAll(".dot").remove();
+      d3.selectAll("text.scattertitle").remove();
+      d3.selectAll("text.scattersubtitle").remove();
+      d3.selectAll("text.xtext").remove();
+      d3.selectAll("text.ytext").remove();
+      d3.selectAll(".xaxis").remove();
 
-  // text label for the x axis
-  svg.append("text")             
-      .attr("transform",
-            "translate(" + (width-xaxsp) + " ," + 
-                           (margin.top/xaxden) + ")")
-      .attr("dy", "1em")
-      .style("text-anchor", "middle")
-      .attr('class', 'xtext')
-      .text(" Job Quality (%) ");
-
-  // text label for the y axis
-  svg.append("text")             
-      .attr("transform", "rotate(-90)")
-      .attr("y", plotHeight/2 + yaxsp*margin.left)
-      .attr("x", 0 - (plotHeight / yaxden))
-      .attr("dy", "1em")
-      .attr('class', 'ytext')
-      .style("text-anchor", "middle")
-      .text(" Female Labor Participation (%) ");
-
-  // Add title
-  svg.append("text")             
-    .attr("transform",
-          "translate(" + (width-540) + " ," + 
-                         (margin.top-95) + ")")
-    .style("text-anchor", "middle")
-    .text("Job Quality and \n Female Labor Participation")
-    .attr('font-size', 20)
-    .attr('class', 'scattertitle')
-    .attr('font-weight', "bold")
-
-    // Add subtitle:
-    svg.append("g").attr("transform", "translate(260, 30)")
-     .append("text")
-     .text("Higher female LFP seems correlated with better jobs...")            
-     .attr("text-anchor", "middle")
-     .attr("dx", ".5em")
-     .attr("dy", "1.5em")
-     .attr('class', 'scattersubtitle')
-     .call(wrap, 1);
-
-}
+      // Produce new scatterplot:
+      updateVar("LMins", "Labor Market Insecurity (index)", "Labor Market Insecurity ",
+        " Labor Market Insecurity  ")
 });
 
     //Create Household Income button
-    var xIncbut = 75
-    var yIncbut = 65
+
+    var ybut = ybut + 35
 
     var IncButton = svg.append("g")
-      .attr("id", "Button")
+      .attr("id", "QualButton")
       .attr("opacity", 10)
       .classed("unclickable", true) //Initially not clickable
       .attr("transform", "translate(" + x.range()[0] + "," + y.range()[1] + ")");
     
     IncButton.append("rect")
-      .attr("x", xIncbut)
-      .attr("y", yIncbut)
-      .attr("width", 125)
+      .attr("x", xbut)
+      .attr("y", ybut)
+      .attr("width", 135)
       .attr("height", 25);
     
     IncButton.append("text")
-      .attr("x", xIncbut+2)
-      .attr("y", yIncbut+15)
-      .html(" Household Income");
+      .attr("x", xbut+2)
+      .attr("y", ybut+15)
+      .html(" Net Household Income");
     
     //Define click behavior
 
@@ -401,77 +360,237 @@ function ReverseScatter(data) {
       d3.selectAll("text.scattersubtitle").remove();
       d3.selectAll("text.xtext").remove();
       d3.selectAll("text.ytext").remove();
+      d3.selectAll(".xaxis").remove();
 
       // Produce new scatterplot:
-      updateToInc()
+    updateVar("Inc", " Net Disposable Household Income (1000 USD) ", "Household Income ",
+       "Even after (higher) taxes,  households in countries with \n higher female LFP tend to be wealthier")
 
-  /************ UPDATE 3 **************************/
-
-  function updateToInc() {  
-  
-  //Update all circles
-  d3.select('#dynscatter').selectAll("circle")
-    .data(data)
-    .transition()
-    .duration(trans_duration)
-    .attr("cx", function(d) {
-      return x(d.Inc);
-    })
-    .attr("cy", function(d) {
-      return y(d.LFP_W);
-    })
-    .attr('fill', d => color(d.Region));
-
-
-  // text label for the x axis
-  svg.append("text")             
-      .attr("transform",
-            "translate(" + (width-xaxsp) + " ," + 
-                           (margin.top/xaxden) + ")")
-      .attr("dy", "1em")
-      .style("text-anchor", "middle")
-      .attr('class', 'xtext')
-      .text(" Household Income (Thousands of USD) ");
-
-  // text label for the y axis
-  svg.append("text")             
-      .attr("transform", "rotate(-90)")
-      .attr("y", plotHeight/2 + yaxsp*margin.left)
-      .attr("x", 0 - (plotHeight / yaxden))
-      .attr("dy", "1em")
-      .attr('class', 'ytext')
-      .style("text-anchor", "middle")
-      .text(" Female Labor Participation (%) ");
-
-  // Add title
-  svg.append("text")             
-    .attr("transform",
-          "translate(" + (width-540) + " ," + 
-                         (margin.top-95) + ")")
-    .style("text-anchor", "middle")
-    .text("Household Income and \n Female Labor Participation")
-    .attr('font-size', 20)
-    .attr('class', 'scattertitle')
-    .attr('font-weight', "bold")
-
-    // Add subtitle:
-    svg.append("g").attr("transform", "translate(290, 30)")
-     .append("text")
-     .text("Even after (higher) taxes,  households in countries with \n higher female LFP tend to be wealthier")            
-     .attr("text-anchor", "middle")
-     .attr("dx", ".5em")
-     .attr("dy", "1.5em")
-     .attr('class', 'scattersubtitle')
-     .call(wrap, 1);
-
-}
 });
 
-    //Create Gov Size button
-    var xbut = 75
-    var ybut = 115
+    //Create Life Satisfaction button
+
+    ybut = ybut + 55
+
+    var LSButton = svg.append("g")
+      .attr("id", "QualButton")
+      .attr("opacity", 10)
+      .classed("unclickable", true) //Initially not clickable
+      .attr("transform", "translate(" + x.range()[0] + "," + y.range()[1] + ")");
+    
+    LSButton.append("rect")
+      .attr("x", xbut)
+      .attr("y", ybut-15)
+      .attr("width", 125)
+      .attr("height", 25);
+    
+    LSButton.append("text")
+      .attr("x", xbut+2)
+      .attr("y", ybut)
+      .html("Life Satisfaction");
+    
+    //Define click behavior
+
+    LSButton.on("click", function() {
+      d3.selectAll(".dot").remove();
+      d3.selectAll("text.scattertitle").remove();
+      d3.selectAll("text.scattersubtitle").remove();
+      d3.selectAll("text.xtext").remove();
+      d3.selectAll("text.ytext").remove();
+      d3.selectAll(".xaxis").remove();
+
+      // Produce new scatterplot:
+      updateVar("LifeSat", "Life Satisfaction (index)", "Life Satisfaction ",
+        "People in countries with higher female LFP report higher life satisfaction")
+});
+
+  //Create Education button
+
+    ybut = ybut + 35
+
+    var EducButton = svg.append("g")
+      .attr("id", "QualButton")
+      .attr("opacity", 10)
+      .classed("unclickable", true) //Initially not clickable
+      .attr("transform", "translate(" + x.range()[0] + "," + y.range()[1] + ")");
+    
+    EducButton.append("rect")
+      .attr("x", xbut)
+      .attr("y", ybut-15)
+      .attr("width", 125)
+      .attr("height", 25);
+    
+    EducButton.append("text")
+      .attr("x", xbut+2)
+      .attr("y", ybut)
+      .html("Educational Level");
+    
+    //Define click behavior
+
+    EducButton.on("click", function() {
+      d3.selectAll(".dot").remove();
+      d3.selectAll("text.scattertitle").remove();
+      d3.selectAll("text.scattersubtitle").remove();
+      d3.selectAll("text.xtext").remove();
+      d3.selectAll("text.ytext").remove();
+      d3.selectAll(".xaxis").remove();
+
+      // Produce new scatterplot:
+      updateVar("Educ", "Years of Education", "Educational Level ",
+        "People in countries with higher female LFP complete \n more years in formal education")
+});
+
+    //Create Education button
+    
+    ybut = ybut + 35
+
+    var LifeExpButton = svg.append("g")
+      .attr("id", "QualButton")
+      .attr("opacity", 10)
+      .classed("unclickable", true) //Initially not clickable
+      .attr("transform", "translate(" + x.range()[0] + "," + y.range()[1] + ")");
+    
+    LifeExpButton.append("rect")
+      .attr("x", xbut)
+      .attr("y", ybut-15)
+      .attr("width", 125)
+      .attr("height", 25);
+    
+    LifeExpButton.append("text")
+      .attr("x", xbut+2)
+      .attr("y", ybut)
+      .html("Life Expectancy");
+    
+    //Define click behavior
+
+    LifeExpButton.on("click", function() {
+      d3.selectAll(".dot").remove();
+      d3.selectAll("text.scattertitle").remove();
+      d3.selectAll("text.scattersubtitle").remove();
+      d3.selectAll("text.xtext").remove();
+      d3.selectAll("text.ytext").remove();
+      d3.selectAll(".xaxis").remove();
+
+      // Produce new scatterplot:
+      updateVar("LifExp", "Life Expectancy", "Life Expectancy ",
+        "Countries with higher female LFP tend to have higher life expectancy")
+});
+
+
+//Create Pollution button
+
+    ybut = ybut + 35
+
+    var PollButton = svg.append("g")
+      .attr("id", "QualButton")
+      .attr("opacity", 10)
+      .classed("unclickable", true) //Initially not clickable
+      .attr("transform", "translate(" + x.range()[0] + "," + y.range()[1] + ")");
+    
+    PollButton.append("rect")
+      .attr("x", xbut)
+      .attr("y", ybut-15)
+      .attr("width", 125)
+      .attr("height", 25);
+    
+    PollButton.append("text")
+      .attr("x", xbut+2)
+      .attr("y", ybut)
+      .html("Air Pollution");
+    
+    //Define click behavior
+
+    PollButton.on("click", function() {
+      d3.selectAll(".dot").remove();
+      d3.selectAll("text.scattertitle").remove();
+      d3.selectAll("text.scattersubtitle").remove();
+      d3.selectAll("text.xtext").remove();
+      d3.selectAll("text.ytext").remove();
+      d3.selectAll(".xaxis").remove();
+
+      // Produce new scatterplot:
+      updateVar("Poll", "Air Pollution Level (index)", "Pollution Level ",
+        " Lower air pollution levels seem strongly correlated \n with higher female LFP")
+});
+
+//Create Homicides button
+
+    ybut = ybut + 35
+
+    var HomButton = svg.append("g")
+      .attr("id", "QualButton")
+      .attr("opacity", 10)
+      .classed("unclickable", true) //Initially not clickable
+      .attr("transform", "translate(" + x.range()[0] + "," + y.range()[1] + ")");
+    
+    HomButton.append("rect")
+      .attr("x", xbut)
+      .attr("y", ybut-15)
+      .attr("width", 125)
+      .attr("height", 25);
+    
+    HomButton.append("text")
+      .attr("x", xbut+2)
+      .attr("y", ybut)
+      .html("Voter Turnout");
+    
+    //Define click behavior
+
+    HomButton.on("click", function() {
+      d3.selectAll(".dot").remove();
+      d3.selectAll("text.scattertitle").remove();
+      d3.selectAll("text.scattersubtitle").remove();
+      d3.selectAll("text.xtext").remove();
+      d3.selectAll("text.ytext").remove();
+      d3.selectAll(".xaxis").remove();
+
+      // Produce new scatterplot:
+      updateVar("Vot", "Voter Turnout (%)", "Civic Engagement ",
+        " We can see a slightly positive correlation between civic engagement \n and higher LFP for women ")
+});
+
+//Create Health button
+
+    ybut = ybut + 35
+
+    var HealthButton = svg.append("g")
+      .attr("id", "QualButton")
+      .attr("opacity", 10)
+      .classed("unclickable", true) //Initially not clickable
+      .attr("transform", "translate(" + x.range()[0] + "," + y.range()[1] + ")");
+    
+    HealthButton.append("rect")
+      .attr("x", xbut)
+      .attr("y", ybut-15)
+      .attr("width", 135)
+      .attr("height", 25);
+    
+    HealthButton.append("text")
+      .attr("x", xbut+2)
+      .attr("y", ybut)
+      .html("Self-Reported Health");
+    
+    //Define click behavior
+
+    HealthButton.on("click", function() {
+      d3.selectAll(".dot").remove();
+      d3.selectAll("text.scattertitle").remove();
+      d3.selectAll("text.scattersubtitle").remove();
+      d3.selectAll("text.xtext").remove();
+      d3.selectAll("text.ytext").remove();
+      d3.selectAll(".xaxis").remove();
+
+      // Produce new scatterplot:
+      updateVar("Health", "Self-Reported Health (%)", "Self-Reported Health ",
+        " People in countries with higher female LFP tend to report \n better health status ")
+});
+
+   //Create Gov Size button
+
+    ybut = ybut + 50
+
     var GovButton = svg.append("g")
-      .attr("id", "Button")
+      .attr("id", "GovButton")
       .attr("opacity", 10)
       .classed("unclickable", true) //Initially not clickable
       .attr("transform", "translate(" + x.range()[0] + "," + y.range()[1] + ")");
@@ -495,28 +614,81 @@ function ReverseScatter(data) {
       d3.selectAll("text.scattersubtitle").remove();
       d3.selectAll("text.xtext").remove();
       d3.selectAll("text.ytext").remove();
+      d3.selectAll(".xaxis").remove();
 
       // Produce new scatterplot:
-      updateToGov()
+      updateVar("Tax", "Tax Revenue (%GDP)", "Public Sector Size ",
+       "Countries with higher female LFP have, on average, larger public sectors")
+});
 
-  /************ UPDATE 4 **************************/
+     //Create Family Policy button
 
-  function updateToGov() {  
+    ybut = ybut + 35
+
+    var FamButton = svg.append("g")
+      .attr("id", "GovButton")
+      .attr("opacity", 10)
+      .classed("unclickable", true) //Initially not clickable
+      .attr("transform", "translate(" + x.range()[0] + "," + y.range()[1] + ")");
+    
+    FamButton.append("rect")
+      .attr("x", xbut)
+      .attr("y", ybut-15)
+      .attr("width", 175)
+      .attr("height", 25);
+    
+    FamButton.append("text")
+      .attr("x", xbut+2)
+      .attr("y", ybut)
+      .html("Family Program Expenditures");
+    
+    //Define click behavior
+
+    FamButton.on("click", function() {
+      d3.selectAll(".dot").remove();
+      d3.selectAll("text.scattertitle").remove();
+      d3.selectAll("text.scattersubtitle").remove();
+      d3.selectAll("text.xtext").remove();
+      d3.selectAll("text.ytext").remove();
+      d3.selectAll(".xaxis").remove();
+
+      // Produce new scatterplot:
+      updateVar("FamSpend", "Family Program Expenditures (%Total Exp.)", "Expenditures in Family Policy Programs ",
+       " ")
+});
+
+
+
+function updateVar(varname, axt, varwd, subt, adjaxis=false) {  
+
+  // Domain, Range, and Scales
+  var xD = data.reduce((d, row) => {
+    return {min: Math.min(row[varname], d.min), max: Math.max(row[varname], d.max)
+    };
+  }, {min: Infinity, max: -Infinity});
+
+  if(adjaxis === false) {
+    var x = d3.scaleLinear().domain([xD.min-1, xD.max+1])
+      .range([plotHeight, margin.top]).nice()}
+
+  else {var x = d3.scaleLinear().domain([adjaxis[0], adjaxis[1]])
+      .range([plotHeight, margin.top]).nice()};
+
   
-
   //Update all circles
   d3.select('#dynscatter').selectAll("circle")
     .data(data)
     .transition()
     .duration(trans_duration)
     .attr("cx", function(d) {
-      return x(d.Tax);
+      return x(d[varname]);
     })
-    .attr("cy", function(d) {
-      return y(d.LFP_W);
-    })
-    .attr('fill', d => color(d.Region));
 
+  // Add X,Y axes with origin in the upper right corner:
+  svg.append('g')
+    .call(d3.axisBottom(x))
+    .attr('class', 'xaxis')
+    .attr('transform', `translate(${-10}, 115)`);
 
   // text label for the x axis
   svg.append("text")             
@@ -526,16 +698,16 @@ function ReverseScatter(data) {
       .attr("dy", "1em")
       .style("text-anchor", "middle")
       .attr('class', 'xtext')
-      .text("Tax Revenue (%GDP) ");
+      .text(axt);
 
   // text label for the y axis
   svg.append("text")             
       .attr("transform", "rotate(-90)")
-      .attr("y", plotHeight/2 + yaxsp*margin.left)
-      .attr("x", 0 - (plotHeight / yaxden))
+      .attr("y", plotHeight/2 + yaxsp*margin.left + 10)
+      .attr("x", 50 - (plotHeight / yaxden))
       .attr("dy", "1em")
-      .attr('class', 'ytext')
       .style("text-anchor", "middle")
+      .attr('class', 'ytext')
       .text(" Female Labor Participation (%) ");
 
   // Add title
@@ -544,15 +716,15 @@ function ReverseScatter(data) {
           "translate(" + (width-540) + " ," + 
                          (margin.top-95) + ")")
     .style("text-anchor", "middle")
-    .text("Public Sector Size and \n Female Labor Participation")
+    .text(varwd + "and \n Female Labor Participation")
     .attr('font-size', 20)
     .attr('class', 'scattertitle')
     .attr('font-weight', "bold")
 
     // Add subtitle:
-    svg.append("g").attr("transform", "translate(260, 30)")
+    svg.append("g").attr("transform", "translate(290, 30)")
      .append("text")
-     .text("Countries with higher female LFP have, on average, larger public sectors")            
+     .text(subt)            
      .attr("text-anchor", "middle")
      .attr("dx", ".5em")
      .attr("dy", "1.5em")
@@ -560,9 +732,8 @@ function ReverseScatter(data) {
      .call(wrap, 1);
 
 }
-});
-
-
 
 };
+
+
 
