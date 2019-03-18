@@ -192,7 +192,7 @@ function ReverseScatter(data) {
     var JQButton = svg.append("g")
       .attr("id", "LabButton")
       .attr("opacity", 10)
-      .classed("unclickable", true) //Initially not clickable
+      .attr('class', "unclickable RoundedButton") 
       .attr("transform", "translate(" + x.range()[0] + "," + y.range()[1] + ")");
     
     JQButton.append("rect")
@@ -228,7 +228,7 @@ function ReverseScatter(data) {
     var GWGButton = svg.append("g")
       .attr("id", "LabButton")
       .attr("opacity", 10)
-      .classed("unclickable", true) //Initially not clickable
+      .attr('class', "unclickable RoundedButton") 
       .attr("transform", "translate(" + x.range()[0] + "," + y.range()[1] + ")");
     
     GWGButton.append("rect")
@@ -266,7 +266,7 @@ function ReverseScatter(data) {
     var ExtraHButton = svg.append("g")
       .attr("id", "LabButton")
       .attr("opacity", 10)
-      .classed("unclickable", true) //Initially not clickable
+      .attr('class', "unclickable RoundedButton") 
       .attr("transform", "translate(" + x.range()[0] + "," + y.range()[1] + ")");
     
     ExtraHButton.append("rect")
@@ -302,13 +302,13 @@ function ReverseScatter(data) {
     var LMinsButton = svg.append("g")
       .attr("id", "LabButton")
       .attr("opacity", 10)
-      .classed("unclickable", true) //Initially not clickable
+      .attr('class', "unclickable RoundedButton") 
       .attr("transform", "translate(" + x.range()[0] + "," + y.range()[1] + ")");
     
     LMinsButton.append("rect")
       .attr("x", xbut)
       .attr("y", ybut-15)
-      .attr("width", 138)
+      .attr("width", 145)
       .attr("height", 25);
     
     LMinsButton.append("text")
@@ -338,7 +338,7 @@ function ReverseScatter(data) {
     var IncButton = svg.append("g")
       .attr("id", "QualButton")
       .attr("opacity", 10)
-      .classed("unclickable", true) //Initially not clickable
+      .attr('class', "unclickable RoundedButton") 
       .attr("transform", "translate(" + x.range()[0] + "," + y.range()[1] + ")");
     
     IncButton.append("rect")
@@ -375,7 +375,7 @@ function ReverseScatter(data) {
     var LSButton = svg.append("g")
       .attr("id", "QualButton")
       .attr("opacity", 10)
-      .classed("unclickable", true) //Initially not clickable
+      .attr('class', "unclickable RoundedButton") 
       .attr("transform", "translate(" + x.range()[0] + "," + y.range()[1] + ")");
     
     LSButton.append("rect")
@@ -411,7 +411,7 @@ function ReverseScatter(data) {
     var EducButton = svg.append("g")
       .attr("id", "QualButton")
       .attr("opacity", 10)
-      .classed("unclickable", true) //Initially not clickable
+      .attr('class', "unclickable RoundedButton") 
       .attr("transform", "translate(" + x.range()[0] + "," + y.range()[1] + ")");
     
     EducButton.append("rect")
@@ -447,13 +447,13 @@ function ReverseScatter(data) {
     var LifeExpButton = svg.append("g")
       .attr("id", "QualButton")
       .attr("opacity", 10)
-      .classed("unclickable", true) //Initially not clickable
+      .attr('class', "unclickable RoundedButton") 
       .attr("transform", "translate(" + x.range()[0] + "," + y.range()[1] + ")");
     
     LifeExpButton.append("rect")
       .attr("x", xbut)
       .attr("y", ybut-15)
-      .attr("width", 125)
+      .attr("width", 128)
       .attr("height", 25);
     
     LifeExpButton.append("text")
@@ -484,13 +484,13 @@ function ReverseScatter(data) {
     var PollButton = svg.append("g")
       .attr("id", "QualButton")
       .attr("opacity", 10)
-      .classed("unclickable", true) //Initially not clickable
+      .attr('class', "unclickable RoundedButton") 
       .attr("transform", "translate(" + x.range()[0] + "," + y.range()[1] + ")");
     
     PollButton.append("rect")
       .attr("x", xbut)
       .attr("y", ybut-15)
-      .attr("width", 125)
+      .attr("width", 128)
       .attr("height", 25);
     
     PollButton.append("text")
@@ -520,13 +520,13 @@ function ReverseScatter(data) {
     var HomButton = svg.append("g")
       .attr("id", "QualButton")
       .attr("opacity", 10)
-      .classed("unclickable", true) //Initially not clickable
+      .attr('class', "unclickable RoundedButton") 
       .attr("transform", "translate(" + x.range()[0] + "," + y.range()[1] + ")");
     
     HomButton.append("rect")
       .attr("x", xbut)
       .attr("y", ybut-15)
-      .attr("width", 125)
+      .attr("width", 128)
       .attr("height", 25);
     
     HomButton.append("text")
@@ -556,13 +556,13 @@ function ReverseScatter(data) {
     var HealthButton = svg.append("g")
       .attr("id", "QualButton")
       .attr("opacity", 10)
-      .classed("unclickable", true) //Initially not clickable
+      .attr('class', "unclickable RoundedButton") 
       .attr("transform", "translate(" + x.range()[0] + "," + y.range()[1] + ")");
     
     HealthButton.append("rect")
       .attr("x", xbut)
       .attr("y", ybut-15)
-      .attr("width", 135)
+      .attr("width", 138)
       .attr("height", 25);
     
     HealthButton.append("text")
@@ -592,13 +592,13 @@ function ReverseScatter(data) {
     var GovButton = svg.append("g")
       .attr("id", "GovButton")
       .attr("opacity", 10)
-      .classed("unclickable", true) //Initially not clickable
+      .attr('class', "unclickable RoundedButton") 
       .attr("transform", "translate(" + x.range()[0] + "," + y.range()[1] + ")");
     
     GovButton.append("rect")
       .attr("x", xbut)
       .attr("y", ybut-15)
-      .attr("width", 125)
+      .attr("width", 128)
       .attr("height", 25);
     
     GovButton.append("text")
@@ -627,14 +627,15 @@ function ReverseScatter(data) {
 
     var FamButton = svg.append("g")
       .attr("id", "GovButton")
+      .attr("class", "button")
       .attr("opacity", 10)
-      .classed("unclickable", true) //Initially not clickable
+      .attr('class', "unclickable RoundedButton") 
       .attr("transform", "translate(" + x.range()[0] + "," + y.range()[1] + ")");
     
     FamButton.append("rect")
       .attr("x", xbut)
       .attr("y", ybut-15)
-      .attr("width", 175)
+      .attr("width", 178)
       .attr("height", 25);
     
     FamButton.append("text")

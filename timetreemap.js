@@ -131,22 +131,24 @@ function MakeTree(data, levels=['Sex', 'Country']) {
         .text((d) => (d.data.Country));
 
         //Create Nest button
-        var xbutt = leg_x+400
+        var xbutt = leg_x+405
         var ybutt = leg_y
 
     var NestButton = svg.append("g")
       .attr("id", "GovButton")
-      .attr("opacity", 10);
+      .attr('class', "unclickable RoundedButtonTree") 
+      .attr("opacity", 1)
+      .attr('rx', 5);
     
     NestButton.append("rect")
       .attr("x", xbutt)
       .attr("y", ybutt)
-      .attr("width", 135)
-      .attr("height", 30);
+      .attr("width", 145)
+      .attr("height", 25);
     
     NestButton.append("text")
-      .attr("x", xbutt+5)
-      .attr("y", ybutt+18)
+      .attr("x", xbutt+6)
+      .attr("y", ybutt+16)
       .html("Nest By Country First");
     
     //Define click behavior

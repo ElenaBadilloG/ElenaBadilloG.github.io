@@ -1,6 +1,6 @@
 /* global d3 */
       /* Add SVG */
-      var svg = d3.select("#lfptime").append("svg")
+var svg = d3.select("#lfptime").append("svg")
         .attr("width", (700+90)+"px")
         .attr("height", (450+90)+"px")
         .append('g')
@@ -16,6 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function MovingLFPSeries(dataset, v) {
 
+
     var data = d3.nest()
                  .key(function(d) { return d[v]; })
                  .entries(dataset);
@@ -23,7 +24,9 @@ function MovingLFPSeries(dataset, v) {
       const colorRange = ['#12939A', '#79C7E3', '#1A3177', '#FF9833', '#af77d0'];
       const regions = dataset.map((row) => {return row.Region}); 
       const regs = Array.from(new Set(regions))
-      const Regcolor = d3.scaleOrdinal().domain(regions).range(colorRange);
+      //console.log(regs)
+      const Regcolor = d3.scaleOrdinal().domain(regs).range(colorRange);
+      //console.log(Regcolor('Rest'))
 
       var width = 700;
       var height = 450;
@@ -31,8 +34,9 @@ function MovingLFPSeries(dataset, v) {
       var duration = 250;
 
         // legend position parameters
-      const leg_y = 250; 
-      const leg_x = 90
+      var leg_y = 250; 
+      var leg_x = 90
+      
 
 
       var lineOpacity = "0.75";
@@ -60,7 +64,8 @@ function MovingLFPSeries(dataset, v) {
       /* Add line into SVG */
       var line = d3.line()
         .x(d => xScale(d.Time))
-        .y(d => yScale(d.FLFP));
+        .y(d => yScale(d.FLFP))
+         .curve(d3.curveBasis);
 
       var lines = svg.append('g')
         .attr('class', 'lines');
@@ -76,22 +81,31 @@ function MovingLFPSeries(dataset, v) {
         .attr('class', 'line-group')  
 
         .append('path')
-        .attr('class', 'line')  
+        .attr('class', 'line')
         .attr('d', d => line(d.values))
         .style('stroke', (d, i) => Regcolor(i))
         .style('opacity', lineOpacity)
-        .on("mouseover", function(d) {
-          
+        .on("mouseover", function(d, i) {
+        
+          // tooltip
+           // d3.select(this)
+           tooltip
+            .style("visibility", "visible")
+            .text(d.key)
+            .style("left", (d3.event.pageX) + "px")
+            .style("top", (d3.event.pageY - 28) + "px")
+            .style("background-color", Regcolor(d.key)),
+
             d3.selectAll('.line')
                 .style('opacity', otherLinesOpacityHover);
-            d3.selectAll('.circle')
-                .style('opacity', circleOpacityOnLineHover);
             d3.select(this)
               .style('opacity', lineOpacityHover)
               .style("stroke-width", lineStrokeHover)
               .style("cursor", "pointer");
           })
         .on("mouseout", function(d) {
+
+            tooltip.style("visibility", "hidden"),
             d3.selectAll(".line")
                 .style('opacity', lineOpacity);
             d3.select(this)
@@ -100,7 +114,8 @@ function MovingLFPSeries(dataset, v) {
           });
 
         // Add legend
-            const legend = svg.selectAll('.rect').data(regs);
+            const legend = svg.selectAll('.rect')
+            .data(regs);
             legend.enter()
             .append('rect')
             .attr('class', 'legrect')
@@ -113,7 +128,7 @@ function MovingLFPSeries(dataset, v) {
             const legTxt = svg.selectAll(null).data(regs);
               legTxt.enter()
               .append('text')
-              .attr('class', 'legText')
+              .attr('class', 'legTextTS')
               .attr("x", function(d, i) {return leg_x+25;})
               .attr("y", function(d, i) {return (i * 20 + leg_y+15);})
               .attr('font-size', 14)
@@ -124,12 +139,12 @@ function MovingLFPSeries(dataset, v) {
       var yAxis = d3.axisLeft(yScale).ticks(10);
 
       svg.append("g")
-        .attr("class", "x axis")
+        .attr("class", "x_axis")
         .attr("transform", `translate(0, ${height-margin})`)
         .call(xAxis);
 
       svg.append("g")
-        .attr("class", "y axis")
+        .attr("class", "y_axis")
         .call(yAxis)
         .append('text')
         .attr("y", -35)
@@ -165,6 +180,9 @@ function MovingLFPSeries(dataset, v) {
     .text('Source: OECD Statistics, 1980-2017')
     .attr('class', 'source')
     .attr('font-size', 12);
+
+
+    transition(d3.selectAll("path")) //animate series
    
 
        // Helper function to wrap long text in chunks - I modified it to make it general and adjust text chunk sizes 
@@ -203,15 +221,15 @@ function MovingLFPSeries(dataset, v) {
 
     var AvgButton = svg.append("g")
       .attr("id", "Button")
-      .attr("class", "button")
+      .attr("class", "RoundedButtonTS")
       .attr("opacity", 10)
-      .classed("unclickable", true) //Initially not clickable
+      .attr('class', "unclickable RoundedButtonTS") 
       //.attr("transform", "translate(" + x.range()[0] + "," + y.range()[1] + ")");
     
     AvgButton.append("rect")
       .attr("x", xbut)
       .attr("y", ybut)
-      .attr("width", 200)
+      .attr("width", 215)
       .attr("height", 30);
     
     AvgButton.append("text")
@@ -224,14 +242,14 @@ function MovingLFPSeries(dataset, v) {
     AvgButton.on("click", function() {
       d3.selectAll(".line").remove();
       d3.selectAll(".legrect").remove();
-      d3.selectAll(".legText").remove();
-      d3.selectAll(".button").remove();
+      d3.selectAll(".legTextTS").remove();
+      d3.selectAll(".RoundedButtonTS").remove();
 
    //Create  By Country button
 
     var BckButton = svg.append("g")
       .attr("id", "Button")
-      .attr("class", "button")
+      .attr("class", "RoundedButtonTS")
       .attr("opacity", 10)
       .classed("unclickable", true) //Initially not clickable
     
@@ -251,13 +269,13 @@ function MovingLFPSeries(dataset, v) {
     BckButton.on("click", function() {
       d3.selectAll(".line").remove();
       d3.selectAll(".legrect").remove();
-      d3.selectAll(".legText").remove();
-      d3.selectAll(".button").remove();
+      d3.selectAll(".legTextTS").remove();
+      d3.selectAll(".RoundedButtonTS").remove();
 
   var AvgButton = svg.append("g")
       .attr("id", "Button")
       .attr("border-radius", 12)
-      .attr("class", "button")
+      .attr("class", "RoundedButtonTS")
       .attr("opacity", 10)
       .classed("unclickable", true) //Initially not clickable
       //.attr("transform", "translate(" + x.range()[0] + "," + y.range()[1] + ")");
@@ -286,4 +304,19 @@ function MovingLFPSeries(dataset, v) {
               MovingLFPSeries(data, "Region")
           })
     });
+
+
+  // Animation snippet.  ref: https://codepen.io/anon/pen/ERrqmp?editors=0010
+  function tweenDash() { 
+      var l = this.getTotalLength(),
+        i = d3.interpolateString("0," + l, l + "," + l);
+      return function (t) { return i(t); };
+    }
+      function transition(selection) {
+      selection.each(function(){
+       d3.select(this).transition()
+        .duration(3000)
+        .attrTween("stroke-dasharray", tweenDash);
+      })
+    }
         
