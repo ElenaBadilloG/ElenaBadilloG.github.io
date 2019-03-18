@@ -52,12 +52,8 @@ var labelArea = 160;
                 .attr('width', labelArea + wid + wid)
                 .attr('height', hei);
 
-        xFrom.domain(d3.extent(data, function (d) {
-            return d.lfp_gap;
-        }));
-        xTo.domain(d3.extent(data, function (d) {
-            return d.Expend;
-        }));
+        xFrom.domain([0, 70]);
+        xTo.domain([0, 70]);
 
         y.domain(data.map(function (d) {
             return d.Country;
