@@ -57,7 +57,7 @@ function MovingLFPSeries(dataset, v) {
 
       var yScale = d3.scaleLinear()
         //.domain([0,100])
-        .domain([0, 100])
+        .domain([20, 100])
         .range([height-margin, 0]);
 
 
