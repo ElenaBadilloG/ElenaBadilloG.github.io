@@ -230,7 +230,7 @@ function MovingLFPSeries(dataset, v) {
       .attr("height", 30);
     
     AvgButton.append("text")
-      .attr("x", xbut+5)
+      .attr("x", xbut+15)
       .attr("y", ybut+19)
       .html("Aggregate Female LFP By Region");
     
@@ -253,11 +253,11 @@ function MovingLFPSeries(dataset, v) {
     BckButton.append("rect")
       .attr("x", xbut)
       .attr("y", ybut)
-      .attr("width", 192)
+      .attr("width", 185)
       .attr("height", 30);
     
     BckButton.append("text")
-      .attr("x", xbut+5)
+      .attr("x", xbut+25)
       .attr("y", ybut+19)
       .html("Female LFP By Country");
     

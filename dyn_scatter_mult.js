@@ -198,11 +198,11 @@ function ReverseScatter(data) {
     JQButton.append("rect")
       .attr("x", xbut)
       .attr("y", ybut-15)
-      .attr("width", 80)
+      .attr("width", 85)
       .attr("height", 25);
     
     JQButton.append("text")
-      .attr("x", xbut+2)
+      .attr("x", xbut+8)
       .attr("y", ybut)
       .html(" Job Quality ");
     
@@ -232,13 +232,13 @@ function ReverseScatter(data) {
       .attr("transform", "translate(" + x.range()[0] + "," + y.range()[1] + ")");
     
     GWGButton.append("rect")
-      .attr("x", xbut)
+      .attr("x", xbut )
       .attr("y", ybut-15)
       .attr("width", 125)
       .attr("height", 25);
     
     GWGButton.append("text")
-      .attr("x", xbut+2)
+      .attr("x", xbut+8)
       .attr("y", ybut)
       .html(" Gender Wage Gap ");
     
@@ -276,7 +276,7 @@ function ReverseScatter(data) {
       .attr("height", 25);
     
     ExtraHButton.append("text")
-      .attr("x", xbut+2)
+      .attr("x", xbut+8)
       .attr("y", ybut)
       .html("Excess Hours Worked");
     
@@ -312,7 +312,7 @@ function ReverseScatter(data) {
       .attr("height", 25);
     
     LMinsButton.append("text")
-      .attr("x", xbut+2)
+      .attr("x", xbut+8)
       .attr("y", ybut)
       .html("Labor Market Insecurity");
     
@@ -348,7 +348,7 @@ function ReverseScatter(data) {
       .attr("height", 25);
     
     IncButton.append("text")
-      .attr("x", xbut+2)
+      .attr("x", xbut+8)
       .attr("y", ybut+15)
       .html(" Net Household Income");
     
@@ -385,7 +385,7 @@ function ReverseScatter(data) {
       .attr("height", 25);
     
     LSButton.append("text")
-      .attr("x", xbut+2)
+      .attr("x", xbut+8)
       .attr("y", ybut)
       .html("Life Satisfaction");
     
@@ -421,7 +421,7 @@ function ReverseScatter(data) {
       .attr("height", 25);
     
     EducButton.append("text")
-      .attr("x", xbut+2)
+      .attr("x", xbut+8)
       .attr("y", ybut)
       .html("Educational Level");
     
@@ -457,7 +457,7 @@ function ReverseScatter(data) {
       .attr("height", 25);
     
     LifeExpButton.append("text")
-      .attr("x", xbut+2)
+      .attr("x", xbut+8)
       .attr("y", ybut)
       .html("Life Expectancy");
     
@@ -494,7 +494,7 @@ function ReverseScatter(data) {
       .attr("height", 25);
     
     PollButton.append("text")
-      .attr("x", xbut+2)
+      .attr("x", xbut+8)
       .attr("y", ybut)
       .html("Air Pollution");
     
@@ -530,7 +530,7 @@ function ReverseScatter(data) {
       .attr("height", 25);
     
     HomButton.append("text")
-      .attr("x", xbut+2)
+      .attr("x", xbut+8)
       .attr("y", ybut)
       .html("Voter Turnout");
     
@@ -566,7 +566,7 @@ function ReverseScatter(data) {
       .attr("height", 25);
     
     HealthButton.append("text")
-      .attr("x", xbut+2)
+      .attr("x", xbut+8)
       .attr("y", ybut)
       .html("Self-Reported Health");
     
@@ -602,7 +602,7 @@ function ReverseScatter(data) {
       .attr("height", 25);
     
     GovButton.append("text")
-      .attr("x", xbut+2)
+      .attr("x", xbut+8)
       .attr("y", ybut)
       .html("Public Sector Size");
     
@@ -639,7 +639,7 @@ function ReverseScatter(data) {
       .attr("height", 25);
     
     FamButton.append("text")
-      .attr("x", xbut+2)
+      .attr("x", xbut+8)
       .attr("y", ybut)
       .html("Family Program Expenditures");
     

@@ -27,8 +27,7 @@ var labelArea = 160;
             .range([20, hei]);
     // took some code structure from:  https://bl.ocks.org/kaijiezhou/bac86244017c850034fe
 
-    function MakeChart(data) { // for each var from dropdown
-
+    function MakeChart(data, nVar) { // for each var from dropdown
 
         const colorRange = ['#12939A', '#79C7E3', '#1A3177', '#FF9833', '#af77d0'];
         const regions = data.map((row) => {return row.Region}); 
@@ -58,7 +57,7 @@ var labelArea = 160;
         }, {min: Infinity, max: -Infinity});
 
         xFrom.domain([0, 70]);
-        xTo.domain([0, xpL.max]);
+        xTo.domain([0, xpL.max]); // largest value for each variable throughout ALL years, to visualize magnitude changes in time as we slide
 
         y.domain(data.map(function (d) {
             return d.Country;
@@ -125,7 +124,7 @@ var labelArea = 160;
                                 .transition()
 
                 chart.append("text").attr("x", wid/3).attr("y", 12).attr("class","title").text("Gender LFP Gap (%)");
-                chart.append("text").attr("x", wid/4+rightOffset).attr("y", 12).attr("class", "title").text("Public Expenditure by Type (% Total Exp)");
+                chart.append("text").attr("x", wid/4+rightOffset-60).attr("y", 12).attr("class", "title").text(nVar +" \n" +  "(% Public Expenditures)");
                 chart.append("text").attr("x", wid+labelArea/3).attr("y", 12).attr("class", "title").text("Country");
 
                   // Add legend
@@ -165,7 +164,7 @@ var labelArea = 160;
                     .attr("height", slidhei);
                     
                 var x = d3.scaleLinear()
-                    .domain([1996, 2017])
+                    .domain([1996, 2016])
                     .range([0, slidwid])
                     .clamp(true);
 
@@ -226,47 +225,48 @@ var labelArea = 160;
           return Math.round(d.Time) == Math.round(h);
         })
 
-        //console.log(newData)
+        console.log(newData)
 
         UpdateYear(newData);
           
         }
       }
-              var dropdown = d3.select("#dropdw-container")
-                .attr("x", 20)
-                .attr("y", 0);
+        var dropdown = d3.select("#dropdw-container")
+          .attr("x", 20)
+          .attr("y", 0);
 
-                dropdown.append("select")
-                    .selectAll("option")
-                    .data(['Social transfers/benefits', 'Economic Affairs', 'Health', 'Public order and safety', 'Defense', 'Public order and safety', 'Education', 
-                      'Environment protection', 'Housing and community amenities', 'Recreation/culture'])
-                    .enter()
-                    .append("option")
-                    .attr("value", function (d) { return d; })
-                    .text(function (d) {return d;});
+          dropdown.append("select")
+              .selectAll("option")
+              .data(['Social transfers/benefits', 'Economic Affairs', 'Health', 'Public order and safety', 'Defense', 'Public order and safety', 'Education', 
+                'Environment protection', 'Housing and community amenities', 'Recreation/culture'])
+              .enter()
+              .append("option")
+              .attr("value", function (d) { return d; })
+              .text(function (d) {return d;});
 
-                 dropdown.on("change", function() {
-                          d3.selectAll(".barchart").remove();
-                          d3.selectAll(".left").remove();
-                          d3.selectAll(".right").remove();
-                          d3.selectAll(".name").remove();
-                          d3.selectAll(".bartitle").remove();
-                          d3.selectAll(".text").remove();
-                          d3.selectAll(".slid").remove();
-                          d3.selectAll(".track").remove();
-                          d3.selectAll(".slider").remove();
+           dropdown.on("change", function() {
+                    d3.selectAll(".barchart").remove();
+                    d3.selectAll(".left").remove();
+                    d3.selectAll(".right").remove();
+                    d3.selectAll(".name").remove();
+                    d3.selectAll(".bartitle").remove();
+                    d3.selectAll(".text").remove();
+                    d3.selectAll(".slid").remove();
+                    d3.selectAll(".track").remove();
+                    d3.selectAll(".slider").remove();
 
-                    var newVar = d3.select(this).select("select").property('value');
-                        newDataset   = vMap[newVar];
-                        console.log(newDataset)
-                    d3.json(newDataset, function(data) {
-                      dataset = data;
-                      MakeChart(dataset);
-                        })
+              var newVar = d3.select(this).select("select").property('value');
+                  newDataset   = vMap[newVar];
+                  console.log(newDataset)
+              d3.json(newDataset, function(data) {
+                dataset = data;
+                MakeChart(dataset, newVar);
+                  })
 
-                });
+          });
 
+// Initially displayed dataset
 d3.json("gov_exp_socALL.json",function(data) {
   dataset = data;
-  MakeChart(dataset);
+  MakeChart(dataset, "Social Benefits/Transfers");
     });

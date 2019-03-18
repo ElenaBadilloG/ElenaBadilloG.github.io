@@ -3,7 +3,7 @@
 
 
 const margin = {top: 20, right: 0, bottom: 0, left: 5},
-      width = 1050 - margin.left - margin.right,
+      width = 1200 - margin.left - margin.right,
       height = 550 - margin.top - margin.bottom,
       colorRange = ['#D49A8C', '#A6C1C1']
 const color = d3.scaleOrdinal().domain([-1,1]).range(colorRange);
@@ -136,7 +136,7 @@ function MakeTree(data, levels=['Sex', 'Country']) {
 
     var NestButton = svg.append("g")
       .attr("id", "GovButton")
-      .attr('class', "unclickable RoundedButtonTree") 
+      .attr('class', "unclickable RoundedButtonTS") 
       .attr("opacity", 1)
       .attr('rx', 5);
     
