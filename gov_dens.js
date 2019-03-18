@@ -3,7 +3,7 @@ var dataset;
 
 var vMap= {'Social transfers/benefits':"gov_exp_socALL.json",
              'Economic Affairs':"gov_exp_econALL.json",
-             'Health': 'gov_exp_recALL.json',
+             'Health': 'gov_exp_healthALL.json',
              'Safety':'gov_exp_safeALL', 
              'Defense': 'gov_exp_defALL.json',
              'Public order and safety':'gov_exp_safeALL.json',
@@ -51,9 +51,14 @@ var labelArea = 160;
                 .attr('class', 'barchart')
                 .attr('width', labelArea + wid + wid)
                 .attr('height', hei);
+                
+        var xpL = data.reduce((d, row) => {
+          return {min: Math.min(row.Expend, d.min), max: Math.max(row.Expend, d.max)
+          };
+        }, {min: Infinity, max: -Infinity});
 
         xFrom.domain([0, 70]);
-        xTo.domain([0, 70]);
+        xTo.domain([0, xpL.max]);
 
         y.domain(data.map(function (d) {
             return d.Country;
@@ -203,7 +208,6 @@ var labelArea = 160;
                     .text("Start: 1996")
                     .attr("transform", "translate(-15," + (-15) + ")");
 
-
       function update(h) {
 
         d3.selectAll(".barchart").remove();
@@ -213,15 +217,16 @@ var labelArea = 160;
         d3.selectAll(".title").remove();
         d3.selectAll(".text").remove();
 
-
           // filter according to slider scale
         handle.attr("cx", x(h));
         label.attr("x", x(h));
 
         // filter data set and redraw plot
-        var newData = dataset.filter(function(d) {
+        var newData = dataset.filter(function(d) { // FIX THIS
           return Math.round(d.Time) == Math.round(h);
         })
+
+        //console.log(newData)
 
         UpdateYear(newData);
           
@@ -253,9 +258,10 @@ var labelArea = 160;
 
                     var newVar = d3.select(this).select("select").property('value');
                         newDataset   = vMap[newVar];
+                        console.log(newDataset)
                     d3.json(newDataset, function(data) {
-                      
-                      MakeChart(data);
+                      dataset = data;
+                      MakeChart(dataset);
                         })
 
                 });
