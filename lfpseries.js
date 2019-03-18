@@ -1,7 +1,7 @@
 /* global d3 */
       /* Add SVG */
 var svg = d3.select("#lfptime").append("svg")
-        .attr("width", (700+90)+"px")
+        .attr("width", (700+180)+"px")
         .attr("height", (450+90)+"px")
         .append('g')
         .attr("transform", `translate(${90}, ${90})`);
@@ -34,8 +34,8 @@ function MovingLFPSeries(dataset, v) {
       var duration = 250;
 
         // legend position parameters
-      var leg_y = 250; 
-      var leg_x = 90
+      var leg_y = 50; 
+      var leg_x = 670
       
 
 
