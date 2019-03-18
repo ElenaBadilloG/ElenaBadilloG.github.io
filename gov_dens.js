@@ -12,12 +12,11 @@ var vMap= {'Social transfers/benefits':"gov_exp_socALL.json",
              'Housing and community amenities':'gov_exp_houseALL.json',
              'Recreation/culture': 'gov_exp_recALL.json'};
 
-
 var labelArea = 160;
     var chart,
             wid = 380,
             bar_height = 45,
-            hei = bar_height + 500;
+            hei = bar_height + 450;
     var rightOffset = wid + labelArea;
 
     var xFrom = d3.scaleLinear()
@@ -26,8 +25,10 @@ var labelArea = 160;
             .range([0, wid]);
     var y = d3.scaleBand()
             .range([20, hei]);
+    // took some code structure from:  https://bl.ocks.org/kaijiezhou/bac86244017c850034fe
 
-    function MakeChart(data) { // took some code structure from:  https://bl.ocks.org/kaijiezhou/bac86244017c850034fe
+    function MakeChart(data) { // for each var from dropdown
+
 
         const colorRange = ['#12939A', '#79C7E3', '#1A3177', '#FF9833', '#af77d0'];
         const regions = data.map((row) => {return row.Region}); 
@@ -36,6 +37,10 @@ var labelArea = 160;
 
         var data = data.filter(function(d) {
           return Math.round(d.Time) == Math.round(1996)});
+
+          UpdateYear(data);
+
+        function UpdateYear(data) { // for each year
 
         data.sort(function(a, b){ // sort by lfp gap
 
@@ -46,7 +51,6 @@ var labelArea = 160;
                 .attr('class', 'barchart')
                 .attr('width', labelArea + wid + wid)
                 .attr('height', hei);
-
 
         xFrom.domain(d3.extent(data, function (d) {
             return d.lfp_gap;
@@ -119,9 +123,34 @@ var labelArea = 160;
                 .on("mouseout", function() { return tooltip.style("visibility", "hidden"), d3.select(this).attr("opacity", 0.75)})
                                 .transition()
 
-                chart.append("text").attr("x",wid/3).attr("y", 12).attr("class","title").text("Gender LFP Gap (%)");
-                chart.append("text").attr("x",wid/4+rightOffset).attr("y", 12).attr("class", "title").text("Public Expenditure by Type (% Total Exp)");
-                chart.append("text").attr("x",wid+labelArea/3).attr("y", 12).attr("class", "title").text("Country");
+                chart.append("text").attr("x", wid/3).attr("y", 12).attr("class","title").text("Gender LFP Gap (%)");
+                chart.append("text").attr("x", wid/4+rightOffset).attr("y", 12).attr("class", "title").text("Public Expenditure by Type (% Total Exp)");
+                chart.append("text").attr("x", wid+labelArea/3).attr("y", 12).attr("class", "title").text("Country");
+
+                  // Add legend
+                  function addLeg() {
+                    const legend = chart.selectAll('.leg_rect').data(regs);
+                    legend.enter()
+                    .append('rect')
+                    .attr('class', 'leg_rect')
+                    .attr("x", function(d, i) {return leg_x+123;})
+                    .attr("y", function(d, i) {return (i * 20) + leg_y+55;})
+                    .attr('height', 20)
+                    .attr('width', 20)
+                    .attr('fill', function(d, i) {return Regcolor(i);});
+                    // legend texts
+                    const legTxt = chart.selectAll(null).data(regs);
+                      legTxt.enter()
+                      .append('text')
+                      .attr('class', 'legText')
+                      .attr("x", function(d, i) {return leg_x+25;})
+                      .attr("y", function(d, i) {return (i * 20 + leg_y+70);})
+                      .attr('font-size', 14)
+                      .text(String);
+                    }
+
+                     addLeg();
+              }
 
     ////////// Add slider //////////
 
@@ -178,26 +207,6 @@ var labelArea = 160;
                     .text("Start: 1996")
                     .attr("transform", "translate(-15," + (-15) + ")");
 
-          // Add legend
-            const legend = chart.selectAll('.leg_rect').data(regs);
-            legend.enter()
-            .append('rect')
-            .attr('class', 'leg_rect')
-            .attr("x", function(d, i) {return leg_x+123;})
-            .attr("y", function(d, i) {return (i * 20) + leg_y+35;})
-            .attr('height', 20)
-            .attr('width', 20)
-            .attr('fill', function(d, i) {return Regcolor(i);});
-            // legend texts
-            const legTxt = chart.selectAll(null).data(regs);
-              legTxt.enter()
-              .append('text')
-              .attr('class', 'legText')
-              .attr("x", function(d, i) {return leg_x+25;})
-              .attr("y", function(d, i) {return (i * 20 + leg_y+50);})
-              .attr('font-size', 14)
-              .text(String);
-
 
       function update(h) {
 
@@ -208,6 +217,7 @@ var labelArea = 160;
         d3.selectAll(".title").remove();
         d3.selectAll(".text").remove();
 
+
           // filter according to slider scale
         handle.attr("cx", x(h));
         label.attr("x", x(h));
@@ -216,96 +226,12 @@ var labelArea = 160;
         var newData = dataset.filter(function(d) {
           return Math.round(d.Time) == Math.round(h);
         })
-        
-        const colorRange = ['#12939A', '#79C7E3', '#1A3177', '#FF9833', '#af77d0'];
-        const regions = newData.map((row) => {return row.Region}); 
-        const regs = Array.from(new Set(regions))
-        const Regcolor = d3.scaleOrdinal().domain(regions).range(colorRange);
 
-
-        newData.sort(function(a, b){ // sort by lfp gap
-            return a["lfp_gap"]-b["lfp_gap"];
-        });
-        var chart = d3.select("#govdens")
-                .append('svg')
-                .attr('class', 'barchart')
-                .attr('width', labelArea + wid + wid)
-                .attr('height', hei);
-
-        xFrom.domain(d3.extent(newData, function (d) {
-            return d.lfp_gap;
-        }));
-        xTo.domain(d3.extent(newData, function (d) {
-            return d.Expend;
-        }));
-
-        y.domain(newData.map(function (d) {
-            return d.Country;
-        }));
-
-        var yPosByIndex = function (d) {
-            return y(d.Country);
-
-        };
-          var tooltip = d3.select("body")
-          .append("div")
-          .attr('class', 'tooltip');
-
-        chart.selectAll("rect.left")
-                .data(newData)
-                .enter().append("rect")
-                .attr("x", function (d) {
-                    return wid - xFrom(d.lfp_gap);
-                })
-                .attr("y", yPosByIndex)
-                .attr("class", "left")
-                .attr("width", function (d) {
-                    return xFrom(d.lfp_gap);
-                })
-                .attr("height", y.bandwidth())
-                .attr('fill', d => Regcolor(d.Region))
-                .attr("opacity", 0.75)
-                .on("mouseover", function(d) { return tooltip.style("visibility", "visible").text(d.lfp_gap).style("left", (d3.event.pageX) + "px")
-                    .style("top", (d3.event.pageY - 28) + "px").style("background-color", Regcolor(d.Region)), d3.select(this).attr("opacity", 1)})
-                .on("mouseout", function() { return tooltip.style("visibility", "hidden"), d3.select(this).attr("opacity", 0.75)});
-                        
-        chart.selectAll("text.name")
-                .data(newData)
-                .enter().append("text")
-                .attr("x", (labelArea / 2) + wid)
-                .attr("y", function (d) {
-                    return y(d.Country) + y.bandwidth() / 2;
-                })
-                .attr("dy", ".20em")
-                .attr("text-anchor", "middle")
-                .attr('class', 'name')
-                .attr('fill', d => Regcolor(d.Region))
-                .text(function(d){return d.Country;});
-        
-        var bars = chart.selectAll("rect.right")
-                .data(newData);
-                bars.enter().append("rect")
-                .attr("x", rightOffset)
-                .attr("y", yPosByIndex)
-                .attr("class", "right")
-                .attr("width", function (d) {
-                    return xTo(d.Expend);
-                })
-                .attr("height", y.bandwidth())
-                .attr('fill', d => Regcolor(d.Region))
-                .attr("opacity", 0.75)
-                .on("mouseover", function(d) { return tooltip.style("visibility", "visible").text(d.Expend).style("left", (d3.event.pageX) + "px")
-                    .style("top", (d3.event.pageY - 28) + "px").style("background-color", Regcolor(d.Region)), d3.select(this).attr("opacity", 1)})
-                .on("mouseout", function() { return tooltip.style("visibility", "hidden"), d3.select(this).attr("opacity", 0.75)})
-                                .transition()
-
-                chart.append("text").attr("x",wid/3).attr("y", 10).attr("class","title").text("Gender LFP Gap (%)");
-                chart.append("text").attr("x",wid/4+rightOffset).attr("y", 10).attr("class", "title").text("Public Expenditure by Type (% Total Exp)");
-                chart.append("text").attr("x",wid+labelArea/3).attr("y", 10).attr("class", "title").text("Country");
+        UpdateYear(newData);
           
         }
       }
-                var dropdown = d3.select("#dropdw-container")
+              var dropdown = d3.select("#dropdw-container")
                 .attr("x", 20)
                 .attr("y", 0);
 
@@ -323,7 +249,7 @@ var labelArea = 160;
                           d3.selectAll(".left").remove();
                           d3.selectAll(".right").remove();
                           d3.selectAll(".name").remove();
-                          d3.selectAll(".title").remove();
+                          d3.selectAll(".bartitle").remove();
                           d3.selectAll(".text").remove();
                           d3.selectAll(".slid").remove();
                           d3.selectAll(".track").remove();

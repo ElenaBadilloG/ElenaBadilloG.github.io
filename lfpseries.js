@@ -24,9 +24,8 @@ function MovingLFPSeries(dataset, v) {
       const colorRange = ['#12939A', '#79C7E3', '#1A3177', '#FF9833', '#af77d0'];
       const regions = dataset.map((row) => {return row.Region}); 
       const regs = Array.from(new Set(regions))
-      //console.log(regs)
       const Regcolor = d3.scaleOrdinal().domain(regs).range(colorRange);
-      //console.log(Regcolor('Rest'))
+
 
       var width = 700;
       var height = 450;
@@ -37,8 +36,6 @@ function MovingLFPSeries(dataset, v) {
       var leg_y = 50; 
       var leg_x = 670
       
-
-
       var lineOpacity = "0.75";
       var lineOpacityHover = "0.85";
       var otherLinesOpacityHover = "0.1";
@@ -83,7 +80,7 @@ function MovingLFPSeries(dataset, v) {
         .append('path')
         .attr('class', 'line')
         .attr('d', d => line(d.values))
-        .style('stroke', (d, i) => Regcolor(i))
+        .style('stroke', function(d, i){if (v==="Region"){return Regcolor(i)} else {return Regcolor(d.values[0].Region)}})
         .style('opacity', lineOpacity)
         .on("mouseover", function(d, i) {
         
@@ -94,7 +91,7 @@ function MovingLFPSeries(dataset, v) {
             .text(d.key)
             .style("left", (d3.event.pageX) + "px")
             .style("top", (d3.event.pageY - 28) + "px")
-            .style("background-color", Regcolor(d.key)),
+            .style("background-color", function(){if (v==="Region"){return Regcolor(d.key)} else {return Regcolor(d.values[0].Region)}})
 
             d3.selectAll('.line')
                 .style('opacity', otherLinesOpacityHover);
