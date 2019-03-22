@@ -78,6 +78,8 @@ var labelArea = 160;
                     return wid - xFrom(d.lfp_gap);
                 })
                 .attr("y", yPosByIndex)
+                .attr("rx", "5px")
+                .attr("ry", "5px")
                 .attr("class", "left")
                 .attr("width", function (d) {
                     return xFrom(d.lfp_gap);
@@ -111,6 +113,8 @@ var labelArea = 160;
                 .append("rect")
                 .attr("x", rightOffset)
                 .attr("y", yPosByIndex)
+                .attr("rx", "5px")
+                .attr("ry", "5px")
                 .attr("class", "right")
                 .attr("width", function (d) {
                     return xTo(d.Expend);
@@ -129,15 +133,18 @@ var labelArea = 160;
 
                   // Add legend
                   function addLeg() {
-                    const legend = chart.selectAll('.leg_rect').data(regs);
+                    const legend = chart.selectAll('.leg_rect')
+                    .data(regs);
                     legend.enter()
                     .append('rect')
                     .attr('class', 'leg_rect')
                     .attr("x", function(d, i) {return leg_x+123;})
                     .attr("y", function(d, i) {return (i * 20) + leg_y+55;})
+                    .attr("rx", "4px")
+                    .attr("ry", "4px")
                     .attr('height', 20)
-                    .attr('width', 20)
-                    .attr('fill', function(d, i) {return Regcolor(i);});
+                    .attr('width', 25)
+                    .attr('fill', (d, i)=> gradient(Regcolor(d), d.split(' ').join('')));
                     // legend texts
                     const legTxt = chart.selectAll(null).data(regs);
                       legTxt.enter()

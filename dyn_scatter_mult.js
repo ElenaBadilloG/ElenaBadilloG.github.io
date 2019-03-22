@@ -143,7 +143,9 @@ function ReverseScatter(data) {
   .attr("y", function(d, i) {return (i * 20) + leg_y;})
   .attr('height', 20)
   .attr('width', 20)
-  .attr('fill', function(d, i) {return color(i);});
+  .attr("rx", "4px")
+  .attr("ry", "4px")
+  .attr('fill', (d, i)=> gradient(color(d), d.split(' ').join('')));
 
   // legend texts
   const legTxt = svg.selectAll(null).data(regs);
