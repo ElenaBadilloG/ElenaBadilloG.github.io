@@ -213,7 +213,7 @@ function MovingLFPSeries(dataset, v) {
 
 
   //Create  button
-    var xbut = 400
+    var xbut = 390
     var ybut = 5
 
     var AvgButton = svg.append("g")
@@ -228,6 +228,7 @@ function MovingLFPSeries(dataset, v) {
       .attr("y", ybut)
       .attr("width", 215)
       .attr("height", 30);
+      
     
     AvgButton.append("text")
       .attr("x", xbut+15)
@@ -247,7 +248,7 @@ function MovingLFPSeries(dataset, v) {
     var BckButton = svg.append("g")
       .attr("id", "Button")
       .attr("class", "RoundedButtonTS")
-      .attr("opacity", 10)
+
       .classed("unclickable", true) //Initially not clickable
     
     BckButton.append("rect")
@@ -281,12 +282,15 @@ function MovingLFPSeries(dataset, v) {
       .attr("x", xbut)
       .attr("y", ybut)
       .attr("width", 192)
-      .attr("height", 30);
+      .attr("height", 30)
+      .attr("filter", "url(#dropshadow)");
     
     AvgButton.append("text")
       .attr("x", xbut+5)
       .attr("y", ybut+19)
       .html("Aggregate Female LFP By Region");
+
+
 
       // Produce new scatterplot:
       d3.json("lfpGap.json", function(error, data) {
@@ -311,9 +315,31 @@ function MovingLFPSeries(dataset, v) {
     }
       function transition(selection) {
       selection.each(function(){
-       d3.select(this).transition()
-        .duration(3000)
+       d3.select(this)
+        .transition()
+        .duration(2000)
         .attrTween("stroke-dasharray", tweenDash);
       })
     }
+
+ // For the drop shadow filter.  ref: https://bl.ocks.org/mbostock/1086421
+var gradient = svg.append("defs")
+  .append("linearGradient")
+    .attr("id", "gradientTS")
+    .attr("x1", "0%")
+    .attr("y1", "0%")
+    .attr("x2", "100%")
+    .attr("y2", "100%")
+    .attr("spreadMethod", "pad");
+
+gradient.append("stop")
+    .attr("offset", "0%")
+    .attr("stop-color", "white")
+    .attr("stop-opacity", 1);
+
+gradient.append("stop")
+    .attr("offset", "100%")
+    .attr("stop-color", "#C6D2D2")
+    .attr("stop-opacity", 1);
+
         

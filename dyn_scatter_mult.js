@@ -116,7 +116,7 @@ function ReverseScatter(data) {
   // Add subtitle:
     svg.append("g").attr("transform", "translate(310, 30)")
      .append("text")
-     .text("Countries with a higher female LFP have, on average, larger public sectors (higher taxation)")            
+     .text("Countries with a higher female LFP have, on average, larger public \n sectors (higher taxation)")            
      .attr("text-anchor", "middle")
      .attr("dx", ".5em")
      .attr("dy", "1.5em")
@@ -191,7 +191,6 @@ function ReverseScatter(data) {
 
     var JQButton = svg.append("g")
       .attr("id", "LabButton")
-      .attr("opacity", 10)
       .attr('class', "unclickable RoundedButton") 
       .attr("transform", "translate(" + x.range()[0] + "," + y.range()[1] + ")");
     
@@ -254,7 +253,7 @@ function ReverseScatter(data) {
 
       // Produce new scatterplot:
       updateVar("Gap", "Gender Wage Gap (%)", "Gender Wage Gap ",
-       "No clear relationship between gender wage gap and female LFP...")
+       "Slightly negative correlation between the gender wage gap and female LFP...")
 
 });
 
@@ -292,7 +291,7 @@ function ReverseScatter(data) {
 
       // Produce new scatterplot:
       updateVar("ExcHours", "Employees Working Very Long Hours (%)", "Excess Hours Worked ",
-        " ")
+        " Fewer workers in countries with higher LFP report \n excessive amount of hours worked")
 });
 
   //Create LM Insecurity button
@@ -328,7 +327,7 @@ function ReverseScatter(data) {
 
       // Produce new scatterplot:
       updateVar("LMins", "Labor Market Insecurity (index)", "Labor Market Insecurity ",
-        " Labor Market Insecurity  ")
+        " People from countries with higher LFP tend to perceive \n less labor market insecurity ")
 });
 
     //Create Household Income button
@@ -344,7 +343,7 @@ function ReverseScatter(data) {
     IncButton.append("rect")
       .attr("x", xbut)
       .attr("y", ybut)
-      .attr("width", 135)
+      .attr("width", 140)
       .attr("height", 25);
     
     IncButton.append("text")
@@ -556,13 +555,13 @@ function ReverseScatter(data) {
     var HealthButton = svg.append("g")
       .attr("id", "QualButton")
       .attr("opacity", 10)
-      .attr('class', "unclickable RoundedButton") 
+      .attr('class', "RoundedButton") 
       .attr("transform", "translate(" + x.range()[0] + "," + y.range()[1] + ")");
     
     HealthButton.append("rect")
       .attr("x", xbut)
       .attr("y", ybut-15)
-      .attr("width", 138)
+      .attr("width", 140)
       .attr("height", 25);
     
     HealthButton.append("text")
@@ -655,7 +654,7 @@ function ReverseScatter(data) {
 
       // Produce new scatterplot:
       updateVar("FamSpend", "Family Program Expenditures (%Total Exp.)", "Expenditures in Family Policy Programs ",
-       " ")
+       " Governments in countries with higher LFP spend relatively more \n in family policy programs")
 });
 
 
@@ -735,6 +734,37 @@ function updateVar(varname, axt, varwd, subt, adjaxis=false) {
 }
 
 };
+
+var colorLab = "#C6D2D2"
+var colorQual = "#D3EAD3"
+var colorGov = "#EAE8E8"
+
+ /* For the LAB drop shadow filter... */
+
+ function gradient(colorG, gradID) {
+    var grad = svg.append("defs")
+      .append("linearGradient")
+        .attr("id", gradID)
+        .attr("x1", "0%")
+        .attr("y1", "0%")
+        .attr("x2", "100%")
+        .attr("y2", "100%")
+        .attr("spreadMethod", "pad");
+
+    grad.append("stop")
+        .attr("offset", "0%")
+        .attr("stop-color", "white")
+        .attr("stop-opacity", 1);
+
+    grad.append("stop")
+        .attr("offset", "100%")
+        .attr("stop-color", colorG)
+        .attr("stop-opacity", 1);
+      return grad };
+
+  var gradientLAB = gradient(colorLab, "gradientLAB")
+  var gradientQual = gradient(colorQual, "gradientQUAL")
+  var gradientLAB = gradient(colorGov, "gradientGOV")
 
 
 

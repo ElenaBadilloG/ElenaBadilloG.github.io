@@ -49,19 +49,20 @@ path.line
 text-align: center;
 }
 
-.Scbutton {
-    position: absolute;
-    border-radius: 20%;
-}
-
      
  #Button {
         cursor: pointer;
     
   }
+
+      #Button rect:hover {
+        fill:#B9C5C5;
+    
+      }
       #Button rect {
         fill: #C6D2D2;
         padding: 2px;
+        fill:url(#gradientTS);
         
       }
       
@@ -77,10 +78,16 @@ text-align: center;
         border-radius: 50%;
     
       }
+
+      #LabButton rect:hover {
+        fill: #B9C5C5;
+    
+      }
       
       #LabButton rect {
         fill: #C6D2D2;
         padding: 2px;
+        fill:url(#gradientLAB);
         
       }
       
@@ -97,10 +104,16 @@ text-align: center;
         border-radius: 50%;
     
       }
+
+       #QualButton rect:hover {
+        fill: #B9C5C5;
+    
+      }
       
       #QualButton rect {
         fill: #D3EAD3;
         padding: 2px;
+        fill:url(#gradientQUAL);
         
       }
       
@@ -112,15 +125,18 @@ text-align: center;
       }
 
    #GovButton {
-
         border-radius: 17px;
         cursor: pointer;
+    
+      }
+   #GovButton rect:hover {
+        fill: #B9C5C5;
     
       }
       
       #GovButton rect {
         fill: #EAE8E8;
-        padding: 2px;
+        fill:url(#gradientGOV);
         
       }
       
@@ -130,12 +146,19 @@ text-align: center;
         text-align: center;
         fill: black;
       }
-      .RoundedButton rect {
+
+  .RoundedButton rect {
         rx:10px;
         ry:10px;
+        x1:0%;
+        y1:0%;
+        x2:0%;
+        y2:100%;
       }
 
-     .RoundedButtonTS rect {
+}
+
+ .RoundedButtonTS rect {
         rx:10px;
         ry:10px;
       }
@@ -164,10 +187,10 @@ text-align: center;
 title, p, h1, h2, h3, h4, h5, h6 {
  font-family: 'EB Garamond', serif;
  }
- title {font-size: 4em; }
+ title {font-size: 6em; }
  p  { font-size: 1.1em; }
- h1 { font-size: 1.8em; }
- h2 { font-size: 1.5em; }
+ h1 { font-size: 2.5em; }
+ h2 { font-size: 1.8em; }
  h3 { font-size: 1.1em ; }
  h4 { font-size: 1.0em; }
  h5 { font-size: 0.9em; }

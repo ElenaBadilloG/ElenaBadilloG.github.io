@@ -225,8 +225,6 @@ var labelArea = 160;
           return Math.round(d.Time) == Math.round(h);
         })
 
-        console.log(newData)
-
         UpdateYear(newData);
           
         }
@@ -257,7 +255,7 @@ var labelArea = 160;
 
               var newVar = d3.select(this).select("select").property('value');
                   newDataset   = vMap[newVar];
-                  console.log(newDataset)
+                  
               d3.json(newDataset, function(data) {
                 dataset = data;
                 MakeChart(dataset, newVar);
@@ -266,7 +264,7 @@ var labelArea = 160;
           });
 
 // Initially displayed dataset
-d3.json("gov_exp_socALL.json",function(data) {
+d3.json("gov_exp_socALL.json", function(data) {
   dataset = data;
   MakeChart(dataset, "Social Benefits/Transfers");
     });

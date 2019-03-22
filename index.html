@@ -1,28 +1,96 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <link href="https://fonts.googleapis.com/css?family=EB+Garamond" rel="stylesheet">
   <meta charset="UTF-8">
-  <title> Trends in Female Labor Participation </title>
+  <title> Global Trends in Female Labor Participation </title>
   <link rel="stylesheet" type="text/css" href="main.css">
 </head>
 <body>
-  <h1>Interactive Visualization Project: Check 1</h1>
-  <h4>    Elena Badillo Goicoechea |  March 03, 2019  </h4>
-  <h2>Introduction</h2>
+  <h1>Global Trends in Female Labor Participation </h1>
+<h2> Interactive Visualization Project</h2>
+  <h3>    Elena Badillo Goicoechea |  March 21, 2019  </h3>
+ 
 
-<p> In this analysis we explore some trends that female labour force participation (LFP) has followed since 1980 in OECD countries.
-</br>After finding that WLFP has grown at very different rates, and up to various levels, 
-in different regions of the world –being </br> particularly high in Nordic countries– we use visualization tools to dig deeper into some potential partial explanations.</p> 
 
-<p> For example, could public policies inducing the substitution of leisure or housework with market labor -such as childcare- </br>  help explain higher these country-level differences?</p>
+
+<p> In this exploratory dashboard we analyze some trends that female labor force participation (LFP) has followed  </br> 
+ in OECD countries since in the last few decades <a href="#fn1">[1]</a>. </br>  
+</br>
+
+Noticing that female LFP has grown at very different rates and up to varying levels in different regions (being </br> especially high in Nordic countries) we can use visualization tools to dig deeper into some possisble explanations.</p> 
+
+<p> For instance, could public policies incentivizing the substitution of leisure or housework (e.g. childcare) for </br>
+ market labor help explain these country-level differences?</p>
 
 <script src="https://d3js.org/d3.v4.js"></script>
-  <div id="lfptime"></div>
-    <p> First, some simple correlations. Choose a variable to explore how it relates with female LFP (remember: this is merely exploratory!). </br> We can start with public sector size, as measured by total taxation ratio to GDP... </p>
-  <script src="lfpseries.js"></script>
-  <div id="dynscatter"></div>
+<script src="https://d3js.org/d3-color.v1.min.js"></script>
+<script src="https://d3js.org/d3-interpolate.v1.min.js"></script>
+<script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+
+<div id="lfptime"></div>
+<script src="lfpseries.js"></script>
+
+  <h2> What socio-economic factors characterize countries with higher female LFP? </h2>
+
+  <p> We might first want to ask if countries with higher female LFP share some common characteristics (aside from having high LFP!).</br> </br> 
+    Choose a variable below to explore of how <b><span style="color:#9DB0B0">labor market outcomes</span></b>, <b><span style="color:#9CBA9C">development metrics</span></b>, and <b><span style="color:#A19D9D">public sector</span></b> variables relate to </br> 
+  female LFP - remember: this is merely exploratory!</br> 
+   We can start with government size: </p>
+
+<div id="slider_scatt"></div>
+<div id="dynscatter"></div>
   <script src="dyn_scatter_mult.js"></script>
-  
+
+  <h2> What Kind of Public Expenditures? </h2>
+
+<p> From a policymaking perspective, the fact that government size is correlated with female LFP is interesting, </br>
+ but doesn't tell us much by itself. </br>
+ What are the <bold> mechanisms </bold> through which government spending could affect female LFP?
+</br></br> To explore this question, it might be worth it to dig deeper into countries' public sector structures and break </br>expenditures by type.</p>
+
+<p> Are any spending branches clearly correlated with the gender LFP gap? </br></br>
+Explore this by choosing any spending branch in the dropdown below and slide along its evolution since 1996...</br> </br> 
+
+(P.S. gender LFP gap -analogous to the gender wage gap- is male LFP as a fraction of female LFP) </p> 
+
+<div id="slider"></div>
+<div id="dropdw-container"></div>
+<div id="govdens"></div>
+<script src="gov_dens.js"></script>
+
+
+<h2> Daily Time Use By Gender </h2>
+
+<p> So, once "unpacking" total public expenditures by branch, we can find no clear correlation between any of them with gender </br>  LFP gap - which is a bit surprising in the case of social welfare expenditures. </br></br>
+
+What we do see in the data (you can return to the scatterplot!), is that the ratio of expenditures in family welfare programs </br> (e.g. childcare services, paid parental leave, and the like) seem to be quite correlated with female LFP.</br> </br> 
+
+In this case there would be a clear mechanism: if it is the case that higher family welfare spending incentivizes women to enter </br>  (or stay in) the workforce, then it should be reflected in the way they allocate their time during the day.</br> For instance, we'd expect more even gender distributions of time allocation to daily activities (especially in the case of </br> paid and unpaid labor) in countries with higher social expenditure levels. </br></br>
+(P.S. Unpaid work mainly includes child and elderly care, as well as housework) </p> 
+
+<p> In the treemap below, the area of each square represents the proportion of global (OECD) daily amount of minutes spent in certain </br> 
+  type of activity contributed by a sample survey participant of each gender, for each country. </br> </br> 
+By pressing the button at the right you can see the data nested the other way round - so for each country we see how time </br> 
+is allocated between genders.
+
+We can notice wide time use differences between genders in "big family-spending" countries and the rest, </br> with Mexico, Turkey and Japan being at the opposite extreme than the Nordics - a divergence also shown in their family spending ratios.</p>
+
+<p> It seems though, that, globally, women spend more daily time engaging in unpaid labor and less in paid work, study, and leisure.</p>
+
+  <div id="treelegend"></div>
+
+  <label><input type="radio" id = "UNPinput" name="mode" value="Value" checked> Unpaid Labor</label>
+  <label><input type="radio" id = "PSinput" name="mode" value="Value"> Paid Work or Study </label>
+  <label><input type="radio" id = "LSinput" name="mode" value="Value"> Leisure </label>
+
+  <div id="timetreemap"></div>
+  <script src="timetreemapv2.js"></script>
+
+  <p id="fn1">[1] All data can be downloaded from the <a href="https://stats.oecd.org">OECD database </a>. Detailed explanation about each dataset is available <a href="https://github.com/ElenaBadilloG/ElenaBadilloG.github.io/blob/master/README.md"> here</a></p>
+
+
+
 </body>
 </html>
 
