@@ -749,7 +749,7 @@ var colorGov = "#EAE8E8"
         .attr("y1", "0%")
         .attr("x2", "100%")
         .attr("y2", "100%")
-        .attr("spreadMethod", "pad");
+        .attr("spreadMethod", "reflect");
 
     grad.append("stop")
         .attr("offset", "0%")

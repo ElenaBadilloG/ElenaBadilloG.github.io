@@ -15,7 +15,7 @@ var vMap= {'Social transfers/benefits':"gov_exp_socALL.json",
 var labelArea = 160;
     var chart,
             wid = 380,
-            bar_height = 45,
+            bar_height = 55,
             hei = bar_height + 450;
     var rightOffset = wid + labelArea;
 
@@ -123,7 +123,7 @@ var labelArea = 160;
                 .on("mouseout", function() { return tooltip.style("visibility", "hidden"), d3.select(this).attr("opacity", 0.75)})
                                 .transition()
 
-                chart.append("text").attr("x", wid/3).attr("y", 12).attr("class","title").text("Gender LFP Gap (%)");
+                chart.append("text").attr("x", wid/1.9).attr("y", 12).attr("class","title").text("Gender LFP Gap (%)");
                 chart.append("text").attr("x", wid/4+rightOffset-60).attr("y", 12).attr("class", "title").text(nVar +" \n" +  "(% Public Expenditures)");
                 chart.append("text").attr("x", wid+labelArea/3).attr("y", 12).attr("class", "title").text("Country");
 
@@ -155,7 +155,7 @@ var labelArea = 160;
     ////////// Add slider //////////
 
                 var slidwid = 800
-                var slidhei = 260       
+                var slidhei = 290       
 
                 var svgSlider = d3.select("#slider")
                     .append("svg")
