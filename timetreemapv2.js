@@ -94,7 +94,7 @@ function MakeTree(dataset, TimeUseVar, levels=['Sex', 'Country']) {
 		  .enter()
 		  .append('rect')
 		  .attr('class', 'leg_op')
-		  .attr("x", function(d, i) {return (i * 5) + leg_x + 180;})
+		  .attr("x", function(d, i) {return (i * 4) + leg_x + 180;})
 		  .attr("y", function(d, i) {return leg_y;})
 		  .attr('height', 30)
 		  .attr('width', 10)
@@ -189,7 +189,13 @@ function MakeTree(dataset, TimeUseVar, levels=['Sex', 'Country']) {
 	        .style("height", (d) => Math.max(0, d.y1 - d.y0  - 1) + "px")
 	        .style("background", (d) => color(d.data.Sex))
 	        .style("opacity", (d) => xScale(d.data.FamilySpending))
-	        .text((d) => (d.data.Country))
+	        .text(function (d) { if(d.data.Country === "United Kingdom") {return "UK"} else{return d.data.Country}})
+	        .on("mousemove", function (d) { d3.select(this).text(Math.round(d.data.hours) + ' \n  min/day')                   
+                })
+	        .on("mouseout", function (d) {
+                     d3.select(this).text(function (d) { if(d.data.Country === "United Kingdom") {return "UK"} else{return d.data.Country}})
+                });
+       
 
 	    d3.selectAll('.node')
 	    .exit()
@@ -199,6 +205,8 @@ function MakeTree(dataset, TimeUseVar, levels=['Sex', 'Country']) {
 
 
     } 
+
+
 
 	}
 

@@ -63,16 +63,16 @@ function ReverseScatter(data) {
   svg.selectAll(".dot")
       .data(data)
       .enter().append("circle")
-      .attr("r", 6) //radius for every dot
+      .attr("r", 8) //radius for every dot
       .attr("cx", function(d) {return x(d.Tax); }) // map each center circle (x,y) to tax, LFP pairs in the data
       .attr("cy", function(d) {return y(d.LFP_W);})
-      .attr('opacity', 0.75)
-      .attr('fill', d => color(d.Region))
+      //.attr('opacity', 0.75)
+      .attr('fill', d => gradient(color(d.Region), d.Region.split(' ').join('')))
       .on("mouseover", function(d) { return tooltip.style("visibility", "visible").text(d.Country).style("left", (d3.event.pageX) + "px")
       .style("top", (d3.event.pageY - 28) + "px").style("background-color", color(d.Region))  ,
-        d3.select(this).attr("r", 4)})
+        d3.select(this).attr("r", 5)})
       .on("mouseout", function() { return tooltip.style("visibility", "hidden"),
-        d3.select(this).attr("r", 6)});
+        d3.select(this).attr("r", 8)});
 
 
   // Add X,Y axes with origin in the upper right corner:
@@ -760,7 +760,7 @@ var colorGov = "#EAE8E8"
         .attr("offset", "100%")
         .attr("stop-color", colorG)
         .attr("stop-opacity", 1);
-      return grad };
+      return 'url(#'+gradID+')'}
 
   var gradientLAB = gradient(colorLab, "gradientLAB")
   var gradientQual = gradient(colorQual, "gradientQUAL")

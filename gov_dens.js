@@ -83,7 +83,7 @@ var labelArea = 160;
                     return xFrom(d.lfp_gap);
                 })
                 .attr("height", y.bandwidth())
-                .attr('fill', d => Regcolor(d.Region))
+                .attr('fill', d => gradient(Regcolor(d.Region), d.Region.split(' ').join('')))
                 .attr("opacity", 0.75)
                 .on("mouseover", function(d) { return tooltip.style("visibility", "visible").text(d.lfp_gap).style("left", (d3.event.pageX) + "px")
                     .style("top", (d3.event.pageY - 28) + "px").style("background-color", Regcolor(d.Region)), d3.select(this).attr("opacity", 1)})
@@ -116,8 +116,8 @@ var labelArea = 160;
                     return xTo(d.Expend);
                 })
                 .attr("height", y.bandwidth())
-                .attr('fill', d => Regcolor(d.Region))
-                .attr("opacity", 0.75)
+                .attr('fill', d => gradient(Regcolor(d.Region), d.Region.split(' ').join('')))
+                //.attr("opacity", 0.75)
                 .on("mouseover", function(d) { return tooltip.style("visibility", "visible").text(d.Expend).style("left", (d3.event.pageX) + "px")
                     .style("top", (d3.event.pageY - 28) + "px").style("background-color", Regcolor(d.Region)), d3.select(this).attr("opacity", 1)})
                 .on("mouseout", function() { return tooltip.style("visibility", "hidden"), d3.select(this).attr("opacity", 0.75)})
@@ -262,6 +262,31 @@ var labelArea = 160;
                   })
 
           });
+
+
+ /* For the LAB drop shadow filter... */
+
+ function gradient(colorG, gradID) {
+    var grad = svg.append("defs")
+      .append("linearGradient")
+        .attr("id", gradID)
+        .attr("x1", "0%")
+        .attr("y1", "0%")
+        .attr("x2", "100%")
+        .attr("y2", "100%")
+        .attr("spreadMethod", "pad");
+
+    grad.append("stop")
+        .attr("offset", "0%")
+        .attr("stop-color", "white")
+        .attr("stop-opacity", 1);
+
+    grad.append("stop")
+        .attr("offset", "70%")
+        .attr("stop-color", colorG)
+        .attr("stop-opacity", 1);
+      return 'url(#'+gradID+')'}
+
 
 // Initially displayed dataset
 d3.json("gov_exp_socALL.json", function(data) {
