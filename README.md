@@ -7,7 +7,7 @@ All data used here is collected and made available by OECD Statistics at https:/
 
 Australia, Austria, Belgium, Canada, Costa Rica, Czech Republic, Denmark, Estonia, Finland, France, Germany, Greece, Hungary, Ireland, Israel, Italy, Japan, Korea, Latvia, Lithuania, Luxembourg, Mexico,  Netherlands, New Zealand, Norway, Portugal, Russia, Slovak Republic, Slovenia, Spain, Sweden, Switzerland, Turkey, United Kingdom, and the United States.
 
-Mian series used throughout the analysis are found and defined as follows:
+Main series used throughout the analysis are found and defined as follows:
 
 - Hours Worked: total number of hours worked over the year divided by the average number of people in employment.
     - OECD Statistics::Labour:: Labour Force Statistics
