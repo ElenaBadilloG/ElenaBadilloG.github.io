@@ -1,0 +1,219 @@
+
+// Treemap
+
+
+const margin = {top: 20, right: 0, bottom: 0, left: 5},
+      width = 1200 - margin.left - margin.right,
+      height = 550 - margin.top - margin.bottom,
+      colorRange = ['#D49A8C', '#A6C1C1']
+const color = d3.scaleOrdinal().domain([-1,1]).range(colorRange);
+const opScale = d3.scaleSequential(d3.interpolateGreys)
+    .domain([1, 15])
+
+ // legend position parameters
+const leg_y = 20; 
+const leg_x = 50;
+const transDur = 1500;
+
+const treemap = d3.treemap().size([width, height]);
+
+const div = d3.select("#timetreemap").append("div")
+    .style("position", "relative")
+    .style("width", (width + margin.left + margin.right) + "px")
+    .style("height", (height + margin.top + margin.bottom) + "px")
+    .style("left", margin.left + "px")
+    .style("top", margin.top + "px");
+
+
+ d3.json("treetime.json", function(gdataset) {
+
+      MakeTree(gdataset, TimeUseVar= "Unpaid work")
+  });
+
+function MakeTree(dataset, TimeUseVar, levels=['Sex', 'Country']) {
+
+	var data =  dataset.filter(function(d) {
+	      return d.TimeUse === TimeUseVar
+	  	});
+
+	d3.selectAll(".leg_holder").remove();
+    d3.selectAll(".node").remove();
+    d3.selectAll(".leg").remove();
+    d3.selectAll(".leg_text").remove();
+    d3.selectAll(".leg_op").remove();
+    d3.selectAll('leg_txt_op').remove();
+
+
+    function createNestingFunction(propertyName){ // Helper function. ref: https://stackoverflow.com/questions/31723061/add-attribute-with-nested-entries-in-d3-js
+    return function(d){ 
+              return d[propertyName];
+           };
+    }
+
+    const gender = data.map((row) => {return row.Sex}); 
+    const genr = Array.from(new Set(gender))
+    const expend = data.map((row) => {return row.FamilySpending}); 
+    const exp = Array.from(new Set(expend))
+    const expd = exp.sort(d3.ascending)
+
+	// Add legend
+
+	var svg = d3.select("#treelegend")
+				.append("svg")
+                .attr("width", 600)
+                .attr("height", 80)
+                .attr("class", "leg_holder");
+
+	var legend = svg.selectAll(".leg_holder")
+		  .data(genr)
+		  .enter()
+		  .append('rect')
+		  .attr('class', 'leg')
+		  .attr("x", function(d, i) {return leg_x;})
+		  .attr("y", function(d, i) {return (i * 20) + leg_y;})
+		  .attr('height', 20)
+		  .attr('width', 60)
+		  .attr('fill', function(d) {return color(d);})
+		  .attr('opacity', 0.75);
+
+	 // legend texts
+	var leg_txt = svg.selectAll('.rect')
+		.data(genr);
+	 leg_txt.enter()
+	    .append('text')
+	    .attr('class', 'leg_text')
+	    .attr("x", function(d, i) {return leg_x+65;})
+	    .attr("y", function(d, i) {return (i * 20 + leg_y+12);})
+	    .attr('font-size', 14)
+	    .text(String);
+
+	 // Opacity Legend. (FamExpend)
+
+	var legendOP = svg.selectAll(".leg_holder")
+		  .data(expd)
+		  .enter()
+		  .append('rect')
+		  .attr('class', 'leg_op')
+		  .attr("x", function(d, i) {return (i * 4) + leg_x + 180;})
+		  .attr("y", function(d, i) {return leg_y;})
+		  .attr('height', 30)
+		  .attr('width', 10)
+		  .style("fill", function(d, i ) { return opScale(d);});
+
+    // Add subtitle:
+    svg.append("g").attr("transform", "translate(290, 55)")
+     .append("text")
+     .attr('class', 'leg_txt_op')
+     .text("Family Expenditures \n (% Social Exp)")            
+     .attr("dx", "-5em")
+     .attr("dy", "1.0em")
+     .attr('font-size', 15);
+
+    var xScale = d3.scaleLinear()
+        .domain([0, 11]) 
+        .range([0.1, 1]);
+    	
+    	BuildNodes(data, levels)
+
+    //Create Nest button
+    var xbutt = leg_x+405
+    var ybutt = leg_y
+
+    var NestButton = svg.append("g")
+      .attr("id", "Button")
+      .attr('class', "unclickable RoundedButtonTS") 
+      .attr("opacity", 1)
+      .attr('rx', 5);
+    
+    NestButton.append("rect")
+      .attr("x", xbutt)
+      .attr("y", ybutt)
+      .attr("width", 145)
+      .attr("height", 25);
+    
+    NestButton.append("text")
+      .attr("x", xbutt+6)
+      .attr("y", ybutt+16)
+      .html("Nest By Country First");
+    
+    //Define click behavior
+    NestButton.on("click", function() {
+
+
+      MakeTree(dataset, TimeUseVar, levels = ['Country', 'Sex'])
+  		});
+
+		// BUTTON INPUT CHANGES
+
+		d3.selectAll("#PSinput").on("change", function() {
+			
+		      MakeTree(dataset, TimeUseVar="Paid work or study")
+		   });
+
+		d3.selectAll("#LSinput").on("change", function() {
+				MakeTree(dataset, TimeUseVar="Leisure")
+		  });
+
+		d3.selectAll("#UNPinput").on("change", function() {
+					MakeTree(dataset, TimeUseVar= "Unpaid work")
+		  });
+
+
+     function BuildNodes(data, levels) {
+
+	    var nest = d3.nest();
+	    for (var i = 0; i < levels.length; i++) {
+	        nest = nest.key( createNestingFunction(levels[i]) );
+	    }
+
+	    var tr = {
+	          "key":"root", 
+	          "values": nest.entries(data) // nest all nodes
+	        }
+
+	    const root = d3.hierarchy(tr, (d) => d.values)
+	      .sum((d) => d.hours);
+
+	    const tree = treemap(root);
+
+	    const node = div.datum(root).selectAll(".node")
+	        .data(tree.leaves())
+	        .enter()
+	        .append("div")
+	        //.transition()
+	    	//.duration(transDur)
+	        .attr("class", "node")
+	        .style("left", (d) => d.x0 + "px")
+	        .style("top", (d) => d.y0 + "px")
+	        .style("width", (d) => Math.max(0, d.x1 - d.x0 - 1) + "px")
+	        .style("height", (d) => Math.max(0, d.y1 - d.y0  - 1) + "px")
+	        .style("background", (d) => color(d.data.Sex))
+	        .style("opacity", (d) => xScale(d.data.FamilySpending))
+	        .text(function (d) { if(d.data.Country === "United Kingdom") {return "UK"} else{return d.data.Country}})
+	        .on("mousemove", function (d) { d3.select(this).text(Math.round(d.data.hours) + ' \n  min/day')                   
+                })
+	        .on("mouseout", function (d) {
+                     d3.select(this).text(function (d) { if(d.data.Country === "United Kingdom") {return "UK"} else{return d.data.Country}})
+                });
+       
+
+	    d3.selectAll('.node')
+	    .exit()
+	    .transition()
+	    .duration(transDur)
+	    .remove();
+
+
+    } 
+
+
+
+	}
+
+     
+
+
+
+
+
+
